@@ -1,3 +1,6 @@
+body {
+  background-color: #473825;
+}
 .App {
   text-align: center;
 }
@@ -16,12 +19,19 @@
 .App-content {
   background-color: #282c34;
   min-height: 100vh;
+  height: calc(100vh - 56px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  background-image: url('./assets/images/vintage-mic.jpg');
+  background-size: cover;
+}
+.App-content.home {
+  background-color: #ffffff;
+
 }
 
 .App-link {
@@ -39,15 +49,41 @@
 
 .Header {
   display: flex;
-  background-color: #282c34;
+  background-color: #060506;
   color: white;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   flex-direction: row;
   justify-content: space-evenly;
+  position: fixed;
+  width: 100%;
 }
 
 li {
   height: 3rem;
+}
+
+li input[type='checkbox'] {
+  display: inline-block;
+  height: 2.5rem;
+  line-height: 3rem;
+}
+
+.col-md-6:hover {
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.item-row:hover {
+  background-color: rgba(255, 255, 255, .25);
+}
+
+button, button:focus, input, input:focus {
+  outline: none;
+}
+
+input.error {
+    border: 1px solid red;
+    background-color: rgba(255, 0, 0, 0.25);
+    color: white;
 }

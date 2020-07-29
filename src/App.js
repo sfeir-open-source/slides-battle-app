@@ -5,10 +5,8 @@ import Navigation from './components/Navigation'
 function App() {
   return (
     <div className="App">
-          <Header/>
-          <div className="App-content">
-              <Navigation />
-          </div>
+        <Header/>
+        <Navigation />
     </div>
   );
 }

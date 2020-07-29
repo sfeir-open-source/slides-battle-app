@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import * as serviceWorker from './serviceWorker';
 
 import { BrowserRouter as Router , Route} from 'react-router-dom';
@@ -11,20 +12,17 @@ import App from './App';
 import Config from './components/Configuration'
 import Battle from './components/Battle'
 
-const globalState = {
-  step: 1,
-  numberOfPlayers: 0,
-  remainingPlayers: [],
-  remainingTopics: [],
-  donePlayers: [],
-  doneTopics: [],
-  nextPlayer: undefined,
-  nextTopic: undefined,
+const TOPICS = ['Histoire', 'Cinéma', 'Bande dessiné', 'Series US'];
+const PLAYERS = ['Batman', 'Catwoman', 'Superman', 'Supergirl'];
+const initialState = {
+    topics: TOPICS,
+    players: PLAYERS,
+    selectedTopics: []
 };
 
-const globalStateContext = React.createContext(globalState);
+const globalStateContext = React.createContext(initialState);
 ReactDOM.render(
-  <globalStateContext.Provider value={globalState}>
+  <globalStateContext.Provider value={initialState}>
     <React.StrictMode>
       <Router>
         <Route path="/" exact strict component={App}></Route>
