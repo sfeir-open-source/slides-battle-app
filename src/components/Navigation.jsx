@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import '../App.css';
 
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
