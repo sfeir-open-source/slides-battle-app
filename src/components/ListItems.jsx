@@ -20,7 +20,6 @@ import getClickedButtonContext from "../selectors/getBtnAddClicked";
 
 import * as actionTypes from "../actions/actionTypes";
 
-import "../App.css";
 
 export const ListItems = (props) => {
 	// Initial setup
