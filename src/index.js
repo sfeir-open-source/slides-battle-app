@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './reducers/rootReducer';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -12,17 +15,10 @@ import App from './App';
 import Config from './components/Configuration'
 import Battle from './components/Battle'
 
-const TOPICS = ['Histoire', 'Cinéma', 'Bande dessiné', 'Series US'];
-const PLAYERS = ['Batman', 'Catwoman', 'Superman', 'Supergirl'];
-const initialState = {
-    topics: TOPICS,
-    players: PLAYERS,
-    selectedTopics: []
-};
+const store = createStore(rootReducer);
 
-const globalStateContext = React.createContext(initialState);
 ReactDOM.render(
-  <globalStateContext.Provider value={initialState}>
+  <Provider store={store}>
     <React.StrictMode>
       <Router>
         <Route path="/" exact strict component={App}></Route>
@@ -30,7 +26,7 @@ ReactDOM.render(
         <Route path="/battle" exact strict component={Battle}></Route>
       </Router>
     </React.StrictMode>
-  </globalStateContext.Provider>,
+  </Provider>,
   document.getElementById('root')
 );
 
