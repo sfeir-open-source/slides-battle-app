@@ -5,7 +5,7 @@
 
 This application is a support to organise Slides-Battle games.
 
-## Application 
+## Application
 
 The application is split in two screens :
 * The first one handles the configuration for every game
