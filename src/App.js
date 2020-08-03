@@ -6,10 +6,10 @@ import Navigation from './components/Navigation'
 class App extends React.Component {
     render() {
         return (
-          <div className="App">
-              <Header/>
-              <Navigation />
-          </div>
+            <div className="App">
+                <Header/>
+                <Navigation />
+            </div>
         );
     }
 }

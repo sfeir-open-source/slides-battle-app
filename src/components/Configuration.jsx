@@ -1,5 +1,6 @@
 import React from "react";
 import "../App.css";
+import { connect } from 'react-redux';
 
 import Header from "./Header";
 
@@ -7,13 +8,7 @@ import ListItems from "./ListItems";
 class Configuration extends React.Component {
   constructor(props) {
     super(props);
-    const TOPICS = ['Histoire', 'Cinéma', 'Bande dessiné', 'Series US'];
-    const PLAYERS = ['Batman', 'Catwoman', 'Superman', 'Supergirl'];
-    this.state = {
-        topics: TOPICS,
-        players: PLAYERS,
-        selectedTopics: []
-    };
+
     this.startGame = this.startGame.bind(this);
   }
 
@@ -32,10 +27,10 @@ class Configuration extends React.Component {
         <Header />
         <div className="row pt-3 App-content flex-row m-0">
             <div className="col-md-6 border-right">
-                <ListItems items={this.state.topics} type="topics" selectedItems={this.state.selectedTopics}> Liste des thèmes </ListItems>
+                <ListItems items={this.props.topics} type="topics" selectedItems={this.props.selectedTopics}> Liste des thèmes </ListItems>
             </div>
             <div className="col-md-6">
-                <ListItems items={this.state.players} type="players"> Liste des joueurs</ListItems>
+                <ListItems items={this.props.players} type="players"> Liste des joueurs</ListItems>
             </div>
         </div>
         </>
@@ -43,4 +38,12 @@ class Configuration extends React.Component {
   }
 }
 
-export default Configuration;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        topics: state.topics,
+        players: state.players,
+        selectedTopics: state.selectedTopics
+    }
+}
+
+export default connect(mapStateToProps)(Configuration);

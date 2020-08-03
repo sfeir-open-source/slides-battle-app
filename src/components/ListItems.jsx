@@ -1,6 +1,8 @@
 import React from 'react';
 import '../App.css';
 
+import { connect } from 'react-redux';
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
@@ -15,6 +17,7 @@ class ListItems extends React.Component {
             btnAddNewItemClicked: false,
             inputNewItem: '',
             editedItem: null,
+            editedItemIndex: null,
             inputEditedItem: ''
         }
         this.handleDelete = this.handleDelete.bind(this);
@@ -25,7 +28,7 @@ class ListItems extends React.Component {
         this.handleCheck = this.handleCheck.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
         this.handleEditChange = this.handleEditChange.bind(this);
-        this.handleEditKeyPress = this.handleEditKeyPress.bind(this)
+        this.handleEditKeyPress = this.handleEditKeyPress.bind(this);
     }
 
     handleDelete(e) {
@@ -34,18 +37,14 @@ class ListItems extends React.Component {
         const selectedItem = items[index];
         const selectedItems = this.props.selectedItems || [];
         const exist = selectedItems.includes(selectedItem);
-        items.splice(index, 1);
 
+        let action = (this.props.type === 'topics') ? 'DELETE_TOPIC' : 'DELETE_PLAYER';
         // delete item from selectedItems too
         if(exist) {
-            const indexSelectedTopics = selectedItems.indexOf(selectedItem);
-            selectedItems.splice(indexSelectedTopics, 1);
+            const indexSelectedItem = selectedItems.indexOf(selectedItem);
+            this.props.deleteSelectedTopicsItem(this.props.selectedItems[indexSelectedItem], 'DELETE_SELECTED_ITEM');
         }
-
-        this.setState(() => ({
-            items: items,
-            selectedTopics:  selectedItems
-        }));
+        this.props.deleteItem(items[index], action);
     }
 
     handleClickAdd(e) {
@@ -58,11 +57,11 @@ class ListItems extends React.Component {
                 previousSibling.focus();
             }
             if(previousSibling.value !== '' ) {
-                const items = this.props.items;
-                const {inputNewItem} = this.state;
-                const newItems = items.push(inputNewItem);
+                const { inputNewItem } = this.state;
+                let action = (this.props.type === 'topics') ? 'ADD_TOPIC' : 'ADD_PLAYER';
+                this.props.addItem(inputNewItem, action);
+
                 this.setState(() => ({
-                    items: newItems,
                     btnAddNewItemClicked: false,
                     inputNewItem: ''
                 }));
@@ -74,7 +73,7 @@ class ListItems extends React.Component {
         e.currentTarget.previousSibling.previousElementSibling.classList.remove('error');
         this.setState(() => ({
             btnAddNewItemClicked: false,
-            inputNewItem: '' 
+            inputNewItem: ''
         }));
     }
 
@@ -84,12 +83,12 @@ class ListItems extends React.Component {
     }
 
     handleKeyPress(e) {
-        const items = this.props.items;
-        const {inputNewItem} = this.state;
+        const { inputNewItem } = this.state;
+
         if(e.key === 'Enter' && e.target.value !== '') {
-            const newItems = items.push(inputNewItem);
+            let action = (this.props.type === 'topics') ? 'ADD_TOPIC' : 'ADD_PLAYER';
+            this.props.addItem(inputNewItem, action);
             this.setState(() => ({
-                items: newItems,
                 btnAddNewItemClicked: false,
                 inputNewItem: ''
             }));
@@ -99,8 +98,10 @@ class ListItems extends React.Component {
     // Initialize edition
     handleClickEdit(e) {
         const element = e.target.innerHTML;
+        e.currentTarget.focus();
         this.setState(() => ({
             editedItem: element,
+            editedItemIndex: this.props.items.indexOf(element),
             inputEditedItem: element
         }));
     }
@@ -116,13 +117,13 @@ class ListItems extends React.Component {
         const items = this.props.items;
         const value = e.target.value;
         const index = items.indexOf(this.state.editedItem);
-
         if(e.key === 'Enter' && value !== '') {
-            const newItems = items[index] = (value);
+            items[index] = (value);
+
             this.setState(() => ({
-                items: newItems,
                 btnAddNewItemClicked: false,
                 editedItem: '',
+                editedItemIndex: null,
                 inputEditedItem: ''
             }));
         }
@@ -130,29 +131,25 @@ class ListItems extends React.Component {
 
     handleCheck(e) {
         const index = e.target.value;
-        const topics = this.props.items;
-        const selectedTopics = this.props.selectedItems;
-        const selectedTopic = topics[index];
-        const exist = selectedTopics.includes(selectedTopic);
+        const { items, selectedItems } = this.props;
+        const selectedTopic = items[index];
+        const exist = selectedItems.includes(selectedTopic);
+
         if(exist) {
-            const indexSelectedTopics = selectedTopics.indexOf(selectedTopic)
-            selectedTopics.splice(indexSelectedTopics, 1)
+            this.props.deleteSelectedTopicsItem(selectedTopic, 'DELETE_SELECTED_ITEM');
         } else {
-            selectedTopics.push(selectedTopic)
+            this.props.addSelectedTopicsItem(selectedTopic, 'ADD_SELECTED_ITEM');
         }
-        this.setState(() => ({
-            selectedTopics: selectedTopics
-        }));
     }
 
     render() {
-        const {type, children} = this.props;
-        const {editedItem, inputEditedItem} = this.state;
-        const items = this.props.items;
-        const selectedItems = this.props.selectedItems;
+        const {items, type, children, selectedItems} = this.props;
+        const {editedItemIndex, inputEditedItem} = this.state;
+
         return (
             <div className="container">
-                <h1>{children}</h1>
+                <h1>{ children }  </h1>
+                <p>{'>' + selectedItems + '<'}</p>
                 <UlListItems
                     items={items}
                     selectedItems={selectedItems}
@@ -160,7 +157,7 @@ class ListItems extends React.Component {
                     onSelectItem={this.handleCheck}
                     onEditChange={this.handleEditChange}
                     onClickEditedItem={this.handleClickEdit}
-                    editedItem={editedItem}
+                    editedItemIndex={editedItemIndex}
                     inputEditedItem={inputEditedItem}
                     onEditKeyPress={this.handleEditKeyPress}
                     typeItem={type} />
@@ -184,7 +181,7 @@ class ListItems extends React.Component {
 
 class UlListItems extends React.Component {
     render() {
-        const { items, onDeleteItem, onSelectItem, onClickEditedItem, onEditChange, typeItem, editedItem, onEditKeyPress, inputEditedItem} = this.props;
+        const { items, onDeleteItem, onSelectItem, onClickEditedItem, onEditChange, typeItem, editedItemIndex, onEditKeyPress, inputEditedItem} = this.props;
         let className = (typeItem === 'players') ? ' p-2' : '' ;
         const listItems = items.map( (item, index) => (
         <li key={index} className={"form-check d-flex justify-content-between item-row" + className}>
@@ -199,10 +196,10 @@ class UlListItems extends React.Component {
                 /> :
                 ''
             }
-            {(editedItem === item) ?
+            {(editedItemIndex === index) ?
                 <input
                     type="text"
-                    className="form-control col-md-8"
+                    className="form-control col-md-10"
                     value={inputEditedItem}
                     onKeyPress={onEditKeyPress}
                     onChange={onEditChange}
@@ -247,4 +244,29 @@ class BtnRemoveNewItem extends React.Component {
     }
 }
 
-export default ListItems;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        items: ownProps.items,
+        type: ownProps.type,
+        selectedItems: ownProps.selectedItems
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteItem: (item, action) => {
+            dispatch({ type: action, item: item })
+        },
+        addItem: (item, action) => {
+            dispatch({ type: action, item: item })
+        },
+        deleteSelectedTopicsItem: (item, action) => {
+            dispatch({ type: action, item: item })
+        },
+        addSelectedTopicsItem: (item, action) => {
+            dispatch({ type: action, item: item })
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListItems);
