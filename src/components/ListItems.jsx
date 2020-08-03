@@ -149,7 +149,6 @@ class ListItems extends React.Component {
         return (
             <div className="container">
                 <h1>{ children }  </h1>
-                <p>{'>' + selectedItems + '<'}</p>
                 <UlListItems
                     items={items}
                     selectedItems={selectedItems}
