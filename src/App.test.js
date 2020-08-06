@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import rootReducer from './reducers/rootReducer';
 import { createStore } from 'redux';
 import { Router } from "react-router-dom";
+import { expect } from 'chai'
 
 import App from './App'
 import Header from './components/Header'
