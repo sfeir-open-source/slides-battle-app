@@ -8,7 +8,6 @@ import rootReducer from './reducers/rootReducer';
 
 import * as serviceWorker from './serviceWorker';
 
-import { BrowserRouter as Router , Route} from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,17 +19,14 @@ const composeEnhancers = composeWithDevTools({
   trace: true,
   traceLimit: 25,
 });
+import Routes from './components/Routes';
 
 const store = createStore(rootReducer, composeEnhancers());
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <Router>
-        <Route path="/" exact strict component={App}></Route>
-        <Route path="/config" exact strict component={Config}></Route>
-        <Route path="/battle" exact strict component={Battle}></Route>
-      </Router>
+      <Routes />
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')
