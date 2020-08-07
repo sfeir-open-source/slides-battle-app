@@ -8,7 +8,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 
-
+import { addItem, deleteItem} from '../actions/ItemActions';
+import { addSelectedTopicsItem, deleteSelectedTopicsItem} from '../actions/selectedTopicsItemActions';
 class ListItems extends React.Component {
     constructor(props) {
         super(props);
@@ -254,16 +255,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         deleteItem: (item, action) => {
-            dispatch({ type: action, item: item })
+            dispatch(deleteItem(item, action))
         },
         addItem: (item, action) => {
-            dispatch({ type: action, item: item })
+            dispatch(addItem(item, action))
         },
         deleteSelectedTopicsItem: (item, action) => {
-            dispatch({ type: action, item: item })
+            dispatch(deleteSelectedTopicsItem(item, action))
         },
         addSelectedTopicsItem: (item, action) => {
-            dispatch({ type: action, item: item })
+            dispatch(addSelectedTopicsItem(item, action))
         },
     }
 }
