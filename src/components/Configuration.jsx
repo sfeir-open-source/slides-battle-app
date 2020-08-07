@@ -15,6 +15,9 @@ function Configuration() {
 	const editedItemState = useSelector(getEditedItemState);
 
 	return (
+		if (window.Cypress) {
+        	window.store = this.state;
+    	}
 		<React.Fragment>
 			<Header />
 			<div className="row pt-3 App-content flex-row m-0">
