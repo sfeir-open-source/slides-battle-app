@@ -1,49 +1,51 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { ReactReduxContext, useSelector } from "react-redux";
 import "../App.css";
-import { connect } from 'react-redux';
-
 import Header from "./Header";
 
 import ListItems from "./ListItems";
-class Configuration extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.startGame = this.startGame.bind(this);
-  }
+function Configuration() {
+    const { store } = useContext(ReactReduxContext);
+    const { getState } = store;
+    const state = getState();
 
-  componentDidMount() {}
+    const topicsFromStore = useSelector((state) => state.topics);
+    const [topics, setTopics] = useState([]);
 
-  componentWillUnmount() {}
+    const selectedTopicsFromStore = useSelector((state) => state.selectedTopics);
+    const [selectedTopics, setSelectedTopics] = useState([]);
 
-  startGame() {
-    // Launch game's component
-    console.log("Start Game");
-  }
+    const playersFromStore = useSelector((state) => state.players);
+    const [players, setPlayers] = useState([]);
 
-  render() {
+    useEffect(() => {
+        setTopics(topicsFromStore);
+        setSelectedTopics(selectedTopicsFromStore);
+        setPlayers(playersFromStore);
+    }, [topicsFromStore, selectedTopicsFromStore, playersFromStore]);
+
     return (
-        <>
-        <Header />
-        <div className="row pt-3 App-content flex-row m-0">
+        <React.Fragment>
+            <Header />
+            <div className="row pt-3 App-content flex-row m-0">
             <div className="col-md-6 border-right">
-                <ListItems items={this.props.topics} type="topics" selectedItems={this.props.selectedTopics}> Liste des thèmes </ListItems>
+                <ListItems
+                items={topics}
+                type="topics"
+                selectedItems={selectedTopics}
+                >
+                Liste des thèmes
+                </ListItems>
             </div>
             <div className="col-md-6">
-                <ListItems items={this.props.players} type="players"> Liste des joueurs</ListItems>
+                <ListItems items={players} type="players">
+                Liste des joueurs
+                </ListItems>
             </div>
-        </div>
-        </>
-    )
-  }
+            </div>
+        </React.Fragment>
+    );
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        topics: state.topics,
-        players: state.players,
-        selectedTopics: state.selectedTopics
-    }
-}
-
-export default connect(mapStateToProps)(Configuration);
+export default Configuration;

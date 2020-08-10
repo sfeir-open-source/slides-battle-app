@@ -16,8 +16,12 @@ import App from './App';
 
 import Config from './components/Configuration'
 import Battle from './components/Battle'
+const composeEnhancers = composeWithDevTools({
+  trace: true,
+  traceLimit: 25,
+});
 
-const store = createStore(rootReducer, composeWithDevTools( ));
+const store = createStore(rootReducer, composeEnhancers());
 
 ReactDOM.render(
   <Provider store={store}>
