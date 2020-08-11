@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme'
 import { createStore } from 'redux';
 import rootReducer from '../reducers/rootReducer';
-import { expect } from 'chai'
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux';
@@ -25,13 +24,13 @@ describe('<ListItems />', () => {
                     </Configuration>
                 </Router>
             </Provider>);
-        expect(wrapper.find('Connect(ListItems)')).to.have.lengthOf(2);
+        expect(wrapper.find('Connect(ListItems)').length).toBe(2);
         const UlListItems = wrapper.find('Connect(ListItems)').find('UlListItems');
-        expect(UlListItems).to.have.lengthOf(2);
+        expect(UlListItems.length).toBe(2);
         // Topics list items
-        expect(UlListItems.first().find('li')).to.have.lengthOf(4);
+        expect(UlListItems.first().find('li').length).toBe(4);
         // Players list items
-        expect(UlListItems.last().find('li')).to.have.lengthOf(4);
+        expect(UlListItems.last().find('li').length).toBe(4);
 
         done();
     })

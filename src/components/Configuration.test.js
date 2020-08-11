@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme'
 import { createStore } from 'redux';
 import rootReducer from '../reducers/rootReducer';
-import { expect } from 'chai'
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux';
@@ -21,7 +20,7 @@ describe('<Configuration />', () => {
                     <Configuration />
                 </Router>
             </Provider>);
-        expect(wrapper.find('Connect(ListItems)')).to.have.lengthOf(2);
+        expect(wrapper.find('Connect(ListItems)').length).toBe(2);
         done();
     })
 
@@ -36,7 +35,7 @@ describe('<Configuration />', () => {
                 </Router>
             </Provider>);
             const received = wrapper.find('Connect(ListItems)').get(0).props.type;
-            expect(received).to.equal('topics')
+            expect(received).toEqual('topics')
         done();
     })
 
@@ -52,7 +51,7 @@ describe('<Configuration />', () => {
             </Provider>);
 
         const received = wrapper.find('Connect(ListItems)').get(1).props.type;
-        expect(received).to.equal('players')
+        expect(received).toEqual('players')
         done();
     })
 });
@@ -70,7 +69,7 @@ describe('<ListItems />', () => {
             </Provider>);
         const received = wrapper.find('Connect(ListItems)').get(1).props.items;
         const expected = ['Batman', 'Catwoman', 'Superman', 'Supergirl'];
-        expect(JSON.stringify(received)).to.equal(JSON.stringify(expected));
+        expect(JSON.stringify(received)).toEqual(JSON.stringify(expected));
         done();
     })
 });
@@ -88,7 +87,7 @@ describe('<ListItems />', () => {
             </Provider>);
         const received = wrapper.find('Connect(ListItems)').get(0).props.items;
         const expected = ['Histoire', 'Cinéma', 'Bande dessiné', 'Series US'];
-        expect(JSON.stringify(received)).to.equal(JSON.stringify(expected));
+        expect(JSON.stringify(received)).toEqual(JSON.stringify(expected));
         done();
     })
 });
