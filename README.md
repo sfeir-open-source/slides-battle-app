@@ -25,3 +25,6 @@ Games are the second part fo the app. The user can start which will take the con
 At the beginning of the game, some theme will be randomly draw.
 
 Then the user will be able to start rounds when a theme and user will be select each time.
+
+## Docker
+docker-compose up -d --build
