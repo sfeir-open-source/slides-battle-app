@@ -1,4 +1,3 @@
-import { expect } from 'chai'
 import React from 'react'
 import { shallow } from 'enzyme'
 import { Link, Router } from "react-router-dom";
@@ -6,6 +5,7 @@ import { createMemoryHistory } from 'history'
 import { render, fireEvent } from '@testing-library/react'
 import Navigation from './Navigation'
 import rootReducer from '../reducers/rootReducer';
+import renderer from 'react-test-renderer';
 
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -31,12 +31,12 @@ describe('<Navigation />', () => {
     it('should contain a configuration link', () => {
         const wrapper = shallow(<Navigation />)
 
-        expect(wrapper.find(Link).filter({to: '/config'})).to.have.length(1);
+        expect(wrapper.find(Link).filter({to: '/config'}).length).toBe(1);
     });
 
     it('should contain a battle link', () => {
         const wrapper = shallow(<Navigation />)
-        expect(wrapper.find(Link).filter({to: '/battle'})).to.have.length(1);
+        expect(wrapper.find(Link).filter({to: '/battle'}).length).toBe(1);
     });
 
     it('full app rendering battle', () => {
@@ -53,6 +53,6 @@ describe('<Navigation />', () => {
         fireEvent.click(getByText('Battle'))
 
         // check that the content changed to the new page
-        expect(container.innerHTML).to.contain('Battle')
+        expect(getByText('Battle')).not.toBeNull();
     })
 })
