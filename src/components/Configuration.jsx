@@ -1,14 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import { ReactReduxContext, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import "../App.css";
 import Header from "./Header";
 
 import ListItems from "./ListItems";
 
 function Configuration() {
-    const { store } = useContext(ReactReduxContext);
-    const { getState } = store;
-    const state = getState();
 
     const topicsFromStore = useSelector((state) => state.topics);
     const [topics, setTopics] = useState([]);

@@ -1,19 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
-import "../App.css";
+import { useDispatch } from "react-redux";
 
+// @material-ui import
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 
+// actions import
 import { addItem, deleteItem } from "../actions/ItemActions";
 import {
     addSelectedTopicsItem,
     deleteSelectedTopicsItem,
 } from "../actions/selectedTopicsItemActions";
-import { useDispatch } from "react-redux";
+
+import "../App.css";
 
 export const ListItems = (props) => {
+    // Initial setup
     const [btnAddNewItemClicked, setBtnAddNewItemClicked] = useState(false);
     const [inputEditedItemVisible, setInputEditedItemVisible] = useState(false);
     const [inputNewItem, setInputNewItem] = useState("");
@@ -33,21 +37,21 @@ export const ListItems = (props) => {
 
         // delete item from selectedItems too
         if (exist) {
-        const indexSelectedItem = selectedItems.indexOf(selectedItem);
+            const indexSelectedItem = selectedItems.indexOf(selectedItem);
+            dispatch(
+                deleteSelectedTopicsItem(
+                    items[indexSelectedItem],
+                    "DELETE_SELECTED_ITEM"
+                )
+            );
+        }
         dispatch(
-            deleteSelectedTopicsItem(
-                items[indexSelectedItem],
-                "DELETE_SELECTED_ITEM"
+            deleteItem(
+                items[index],
+                action
             )
         );
-    }
-    dispatch(
-        deleteItem(
-            items[index],
-            action
-        )
-    );
-};
+    };
 
     const handleClickAdd = (e) => {
         setBtnAddNewItemClicked(true);
@@ -85,15 +89,15 @@ export const ListItems = (props) => {
 
     const handleKeyPress = (e) => {
         if (e.key === "Enter" && e.target.value !== "") {
-        let action = props.type === "topics" ? "ADD_TOPIC" : "ADD_PLAYER";
-        dispatch(
-            addItem(
-                inputNewItem,
-                action
-            )
-        );
-        setBtnAddNewItemClicked(false);
-        setInputNewItem("");
+            let action = props.type === "topics" ? "ADD_TOPIC" : "ADD_PLAYER";
+            dispatch(
+                addItem(
+                    inputNewItem,
+                    action
+                )
+            );
+            setBtnAddNewItemClicked(false);
+            setInputNewItem("");
         }
     };
 
@@ -151,9 +155,6 @@ export const ListItems = (props) => {
     // Source : https://codesandbox.io/s/outside-alerter-hooks-lmr2y?module=/src/OutsideAlerter.js&file=/src/OutsideAlerter.js:857-873
     const useOutsideEvent = (ref) => {
         useEffect(() => {
-            /**
-             * Alert if clicked on outside of element
-             */
             function handleClickOutside(event) {
                 if (ref.current && !ref.current.contains(event.target)) {
                     setInputEditedItemVisible(false);
@@ -170,32 +171,31 @@ export const ListItems = (props) => {
         }, [ref]);
     }
 
-    const { items, type, children, selectedItems } = props;
+    const { items, type, children } = props;
     return (
         <div className="container">
             <h1>{children} </h1>
             <UlListItems
                 items={items}
-                selectedItems={selectedItems}
+                typeItem={type}
+                editedItemIndex={editedItemIndex}
+                inputEditedItem={inputEditedItem}
+                inputEditedItemVisible={inputEditedItemVisible}
                 onDeleteItem={handleDelete}
                 onSelectItem={handleCheck}
                 onEditChange={handleEditChange}
                 onClickEditedItem={handleClickEdit}
-                editedItemIndex={editedItemIndex}
-                inputEditedItem={inputEditedItem}
-                inputEditedItemVisible={inputEditedItemVisible}
                 onEditKeyPress={handleEditKeyPress}
                 onClickOutside={useOutsideEvent}
-                typeItem={type}
             />
 
             { btnAddNewItemClicked ? (
                 <input
                     type="text"
                     value={inputNewItem}
+                    name="newItem"
                     onKeyPress={handleKeyPress}
                     onChange={handleChange}
-                    name="newItem"
                 />
             ) : (
                 ""
@@ -213,21 +213,22 @@ export const ListItems = (props) => {
 function UlListItems(props) {
     const {
         items,
-        onDeleteItem,
-        onSelectItem,
-        onClickEditedItem,
-        onEditChange,
         typeItem,
         editedItemIndex,
-        onEditKeyPress,
         inputEditedItem,
         inputEditedItemVisible,
+        onDeleteItem,
+        onSelectItem,
+        onEditChange,
+        onClickEditedItem,
+        onEditKeyPress,
         onClickOutside
     } = props;
+
     const wrapperRef = useRef(null);
     onClickOutside(wrapperRef);
 
-    let className = typeItem === "players" ? " p-2" : "";
+    const className = typeItem === "players" ? " p-2" : "";
     const listItems = items.map((item, index) => (
         <li
             key = {index}
@@ -238,7 +239,6 @@ function UlListItems(props) {
         <div className="form-group">
             {typeItem === "topics" ? (
             <input
-                ref={wrapperRef}
                 type="checkbox"
                 name={item}
                 className="form-check-input"
@@ -279,28 +279,30 @@ function UlListItems(props) {
 function BtnAddNewItem(props) {
     const handleClick = props.onClick;
     return (
-    <IconButton
-        aria-label="add"
-        onClick={handleClick}
-        title="Add new item"
-        style={{ color: "#fff" }}
-    >
-        <AddCircleRoundedIcon />
-    </IconButton>
+        <IconButton
+            aria-label="add"
+            onClick={handleClick}
+            title="Add new item"
+            style={{ color: "#fff" }}
+        >
+            <AddCircleRoundedIcon />
+        </IconButton>
     );
 }
 
 function BtnRemoveNewItem(props) {
     const handleClick = props.onClick;
     return (
-        <IconButton
-            aria-label="remove"
-            onClick={handleClick}
-            title="Remove new item"
-            style={{ color: "#fff" }}
-        >
-        <RemoveCircleIcon />
-        </IconButton>
+        <React.Fragment>
+            <IconButton
+                aria-label="remove"
+                onClick={handleClick}
+                title="Remove new item"
+                style={{ color: "#fff" }}
+            >
+            <RemoveCircleIcon />
+            </IconButton>
+        </React.Fragment>
     );
 }
 
