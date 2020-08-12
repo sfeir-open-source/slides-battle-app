@@ -12,7 +12,9 @@ import { BrowserRouter as Router , Route} from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Routes from './components/Routes';
+import App from './App';
+import Config from './components/Configuration';
+import Battle from './components/Battle';
 
 const composeEnhancers = composeWithDevTools({
   trace: true,
