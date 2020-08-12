@@ -1,13 +1,2 @@
-export const deleteSelectedTopicsItem = (item, action) => {
-    return {
-        type: action,
-        item
-    }
-}
-
-export const addSelectedTopicsItem = (item, action) => {
-    return {
-        type: action,
-        item
-    }
-}
+export const deleteSelectedTopicsItem = (item, DELETE_ACTION) => ({ type: DELETE_ACTION, item });
+export const addSelectedTopicsItem = (item, ADD_ACTION)  => ({ type: ADD_ACTION, item });
