@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import "../App.css";
-import Header from "./Header";
 
+import Header from "./Header";
 import ListItems from "./ListItems";
+
+import getTopics from '../selectors/getTopics';
+import getPlayers from '../selectors/getPlayers';
+import getSelectedTopics from '../selectors/getSelectedTopics';
 
 function Configuration() {
 
-    const topicsFromStore = useSelector((state) => state.topics);
+    const topics = useSelector(getTopics);
+    const players = useSelector(getPlayers);
+    const selectedTopics = useSelector(getSelectedTopics);
+
+    /*const topicsFromStore = useSelector((state) => state.topics);
     const [topics, setTopics] = useState([]);
 
     const selectedTopicsFromStore = useSelector((state) => state.selectedTopics);
@@ -15,12 +23,12 @@ function Configuration() {
 
     const playersFromStore = useSelector((state) => state.players);
     const [players, setPlayers] = useState([]);
-
+*/
     useEffect(() => {
-        setTopics(topicsFromStore);
+        /*setTopics(topicsFromStore);
         setSelectedTopics(selectedTopicsFromStore);
-        setPlayers(playersFromStore);
-    }, [topicsFromStore, selectedTopicsFromStore, playersFromStore]);
+        setPlayers(playersFromStore);*/
+    }, [topics, selectedTopics, players]);
 
     return (
         <React.Fragment>
