@@ -12,10 +12,8 @@ import { BrowserRouter as Router , Route} from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import App from './App';
+import Routes from './components/Routes';
 
-import Config from './components/Configuration'
-import Battle from './components/Battle'
 const composeEnhancers = composeWithDevTools({
   trace: true,
   traceLimit: 25,
