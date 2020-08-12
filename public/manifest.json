@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "slides-battle-app",
+  "name": "Slides Battle games helper application",
   "icons": [
     {
       "src": "favicon.ico",
