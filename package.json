@@ -6,9 +6,6 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@reduxjs/toolkit": "^1.4.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -18,8 +15,7 @@
     "react-redux": "^7.2.1",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "redux-devtools-extension": "^2.13.8"
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,6 +39,19 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^4.0.8"
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-jest": "^26.3.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^26.3.0",
+    "react-test-renderer": "^16.13.1",
+    "redux-mock-store": "^1.5.4",
+    "redux-devtools-extension": "^2.13.8",
+    "jest-enzyme": "^7.1.2",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2"
   }
 }
