@@ -21,10 +21,9 @@ const rootReducer = (state = initialState, action) => {
                 topics: newTopics
             }
         case 'ADD_TOPIC':
-            state.topics.push(action.item);
             return {
                 ...state,
-                topics: state.topics
+                topics: [...state.topics, action.item]
             }
         case 'DELETE_SELECTED_ITEM':
             newSelectedTopics = state.selectedTopics.filter( (selectedTopic) => {
@@ -35,10 +34,9 @@ const rootReducer = (state = initialState, action) => {
                 selectedTopics: newSelectedTopics
             }
         case 'ADD_SELECTED_ITEM':
-            state.selectedTopics.push(action.item);
             return {
                 ...state,
-                selectedTopics: state.selectedTopics
+                selectedTopics: [...state.selectedTopics, action.item]
             }
         case 'DELETE_PLAYER':
             newPlayers = state.players.filter( (player) => {
@@ -49,10 +47,9 @@ const rootReducer = (state = initialState, action) => {
                 players: newPlayers
             }
         case 'ADD_PLAYER':
-            state.players.push(action.item);
             return {
                 ...state,
-                players: state.players
+                players: [...state.players, action.item]
         }
         default:
             return state;
