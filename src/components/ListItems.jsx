@@ -188,24 +188,15 @@ export const ListItems = (props) => {
                 onEditKeyPress={handleEditKeyPress}
                 onClickOutside={useOutsideEvent}
             />
+            <AddButton
+                isClicked={btnAddNewItemClicked}
+                inputValue={inputNewItem}
+                onKeyPress={handleKeyPress}
+                onChange={handleChange}
+                add={handleClickAdd}
+                remove={handleClickRemove}
+            />
 
-            { btnAddNewItemClicked ? (
-                <input
-                    type="text"
-                    value={inputNewItem}
-                    name="newItem"
-                    onKeyPress={handleKeyPress}
-                    onChange={handleChange}
-                />
-            ) : (
-                ""
-            )}
-            <BtnAddNewItem onClick={handleClickAdd} />
-            { btnAddNewItemClicked ? (
-                <BtnRemoveNewItem onClick={handleClickRemove} />
-            ) : (
-                ""
-            )}
         </div>
     );
 };
@@ -236,41 +227,41 @@ function UlListItems(props) {
                 "form-check d-flex justify-content-between item-row" + className
             }
         >
-        <div className="form-group">
-            {typeItem === "topics" ? (
-            <input
-                type="checkbox"
-                name={item}
-                className="form-check-input"
-                onClick={onSelectItem}
+            <div className="form-group">
+                {typeItem === "topics" ? (
+                    <input
+                        type="checkbox"
+                        name={item}
+                        className="form-check-input"
+                        onClick={onSelectItem}
+                        value={index}
+                    />
+                ) : (
+                    ""
+                )}
+                { ( editedItemIndex === index && inputEditedItemVisible ) ? (
+                    <input
+                        ref={wrapperRef}
+                        type="text"
+                        className="form-control col-md-10"
+                        value={inputEditedItem}
+                        onKeyPress={onEditKeyPress}
+                        onChange={onEditChange}
+                    />
+                ) : (
+                    <span className="form-check-label" onClick={onClickEditedItem}>
+                        {item}
+                    </span>
+                )}
+            </div>
+            <IconButton
+                aria-label="delete"
+                onClick={onDeleteItem}
                 value={index}
-            />
-            ) : (
-            ""
-            )}
-            { ( editedItemIndex === index && inputEditedItemVisible ) ? (
-                <input
-                    ref={wrapperRef}
-                    type="text"
-                    className="form-control col-md-10"
-                    value={inputEditedItem}
-                    onKeyPress={onEditKeyPress}
-                    onChange={onEditChange}
-                />
-            ) : (
-                <span className="form-check-label" onClick={onClickEditedItem}>
-                    {item}
-                </span>
-            )}
-        </div>
-        <IconButton
-            aria-label="delete"
-            onClick={onDeleteItem}
-            value={index}
-            style={{ color: "#fff" }}
-        >
-            <DeleteIcon />
-        </IconButton>
+                style={{ color: "#fff" }}
+            >
+                <DeleteIcon />
+            </IconButton>
         </li>
     ));
     return <ul className="p-0">{listItems}</ul>;
@@ -278,6 +269,7 @@ function UlListItems(props) {
 
 function BtnAddNewItem(props) {
     const handleClick = props.onClick;
+
     return (
         <IconButton
             aria-label="add"
@@ -304,6 +296,34 @@ function BtnRemoveNewItem(props) {
             </IconButton>
         </React.Fragment>
     );
+}
+
+
+function AddButton(props) {
+    const {
+        isClicked,
+        onKeyPress,
+        onChange,
+        inputValue,
+        add,
+        remove
+    } = props;
+
+    return isClicked ? (
+        <React.Fragment>
+            <input
+                type="text"
+                value={inputValue}
+                name="newItem"
+                onKeyPress={onKeyPress}
+                onChange={onChange}
+            />
+            <BtnAddNewItem onClick={add} />
+            <BtnRemoveNewItem onClick={remove} />
+        </React.Fragment>
+    ) : (
+        <BtnAddNewItem onClick={add} />
+    )
 }
 
 export default ListItems;
