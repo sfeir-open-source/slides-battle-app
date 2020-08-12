@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  Provider
+} from 'react-redux';
+import {
+  createStore
+} from 'redux';
+import {
+  composeWithDevTools
+} from 'redux-devtools-extension';
 
 import rootReducer from './reducers/rootReducer';
 
@@ -11,24 +17,26 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import App from './App';
-import Config from './components/Configuration';
-import Battle from './components/Battle';
+import Routes from './components/Routes';
 
 const composeEnhancers = composeWithDevTools({
   trace: true,
   traceLimit: 25,
 });
-import Routes from './components/Routes';
 
 const store = createStore(rootReducer, composeEnhancers());
 
-ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <Routes />
-    </React.StrictMode>
-  </Provider>,
+ReactDOM.render( <
+  Provider store = {
+    store
+  } >
+  <
+  React.StrictMode >
+  <
+  Routes / >
+  <
+  /React.StrictMode> <
+  /Provider>,
   document.getElementById('root')
 );
 
