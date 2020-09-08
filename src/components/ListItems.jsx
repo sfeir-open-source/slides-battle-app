@@ -18,6 +18,8 @@ import { btnAddClicked, setEditedItemState } from "../actions/listItemsActions";
 
 import getClickedButtonContext from "../selectors/getBtnAddClicked";
 
+import * as actionTypes from "../actions/actionTypes";
+
 import "../App.css";
 
 export const ListItems = (props) => {
@@ -60,7 +62,10 @@ export const ListItems = (props) => {
 		const selectedItem = items[index];
 		const selectedItems = props.selectedItems || [];
 		const exist = selectedItems.includes(selectedItem);
-		let action = props.type === "topics" ? "DELETE_TOPIC" : "DELETE_PLAYER";
+		let action =
+			props.type === "topics"
+				? actionTypes.DELETE_TOPIC
+				: actionTypes.DELETE_PLAYER;
 
 		// delete item from selectedItems too
 		if (exist) {
@@ -68,7 +73,7 @@ export const ListItems = (props) => {
 			dispatch(
 				deleteSelectedTopicsItem(
 					items[indexSelectedItem],
-					"DELETE_SELECTED_ITEM"
+					actionTypes.DELETE_SELECTED_ITEM
 				)
 			);
 		}
@@ -77,8 +82,7 @@ export const ListItems = (props) => {
 
 	const handleClickAdd = (e) => {
 		//const { isBtnAddClicked } = clickedButtonContext;
-		dispatch(btnAddClicked(true, props.type, "BTN_ADD_CLICKED"));
-
+		dispatch(btnAddClicked(true, props.type, actionTypes.BTN_ADD_CLICKED));
 		/*if (isBtnAddClicked) {
 			const previousSiblingElement = e.currentTarget.previousElementSibling;
 			setPreviousSibling(previousSiblingElement);
@@ -90,11 +94,12 @@ export const ListItems = (props) => {
 	};
 
 	const handleSubmit = () => {
-		let action = props.type === "topics" ? "ADD_TOPIC" : "ADD_PLAYER";
+		let action =
+			props.type === "topics" ? actionTypes.ADD_TOPIC : actionTypes.ADD_PLAYER;
 
+		dispatch(addItem(editedItemState.input.value, action));
+		dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
 		dispatch(
-			addItem(editedItemState.input.value, action),
-			dispatch(btnAddClicked(false, props.type, "BTN_ADD_CLICKED")),
 			setEditedItemState(
 				{
 					item: null,
@@ -105,15 +110,15 @@ export const ListItems = (props) => {
 					index: null,
 					type: props.type,
 				},
-				"EDITED_ITEM_STATE"
+				actionTypes.EDITED_ITEM_STATE
 			)
 		);
 	};
 
 	const handleClickRemove = (e) => {
 		//setBtnAddNewItemClicked(false);
+		dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
 		dispatch(
-			btnAddClicked(false, props.type, "BTN_ADD_CLICKED"),
 			setEditedItemState(
 				{
 					item: null,
@@ -124,7 +129,7 @@ export const ListItems = (props) => {
 					index: null,
 					type: props.type,
 				},
-				"EDITED_ITEM_STATE"
+				actionTypes.EDITED_ITEM_STATE
 			)
 		);
 		//setInputNewItem("");
@@ -143,7 +148,7 @@ export const ListItems = (props) => {
 					index: null,
 					type: props.type,
 				},
-				"EDITED_ITEM_STATE"
+				actionTypes.EDITED_ITEM_STATE
 			)
 		);
 		//setInputNewItem(value);
@@ -151,10 +156,14 @@ export const ListItems = (props) => {
 
 	const handleKeyPress = (e) => {
 		if (e.key === "Enter" && e.target.value !== "") {
-			let action = props.type === "topics" ? "ADD_TOPIC" : "ADD_PLAYER";
+			let action =
+				props.type === "topics"
+					? actionTypes.ADD_TOPIC
+					: actionTypes.ADD_PLAYER;
+
+			dispatch(addItem(editedItemState.input.value, action));
+			dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
 			dispatch(
-				addItem(editedItemState.input.value, action),
-				btnAddClicked(false, props.type, "BTN_ADD_CLICKED"),
 				setEditedItemState(
 					{
 						item: null,
@@ -165,7 +174,7 @@ export const ListItems = (props) => {
 						index: null,
 						type: props.type,
 					},
-					"EDITED_ITEM_STATE"
+					actionTypes.EDITED_ITEM_STATE
 				)
 			);
 			//setBtnAddNewItemClicked(false);
@@ -192,7 +201,7 @@ export const ListItems = (props) => {
 					index: index,
 					type: props.type,
 				},
-				"EDITED_ITEM_STATE"
+				actionTypes.EDITED_ITEM_STATE
 			)
 		);
 	};
@@ -211,7 +220,7 @@ export const ListItems = (props) => {
 					index: props.editedItemState.index,
 					type: props.type,
 				},
-				"EDITED_ITEM_STATE"
+				actionTypes.EDITED_ITEM_STATE
 			)
 		);
 	};
@@ -237,7 +246,7 @@ export const ListItems = (props) => {
 						index,
 						type: props.type,
 					},
-					"EDITED_ITEM_STATE"
+					actionTypes.EDITED_ITEM_STATE
 				)
 			);
 			//setEditedItem("");
@@ -254,9 +263,16 @@ export const ListItems = (props) => {
 		const exist = selectedItems.includes(selectedTopic);
 
 		if (exist) {
-			dispatch(deleteSelectedTopicsItem(selectedTopic, "DELETE_SELECTED_ITEM"));
+			dispatch(
+				deleteSelectedTopicsItem(
+					selectedTopic,
+					actionTypes.DELETE_SELECTED_ITEM
+				)
+			);
 		} else {
-			dispatch(addSelectedTopicsItem(selectedTopic, "ADD_SELECTED_ITEM"));
+			dispatch(
+				addSelectedTopicsItem(selectedTopic, actionTypes.ADD_SELECTED_ITEM)
+			);
 		}
 	};
 
@@ -275,9 +291,11 @@ export const ListItems = (props) => {
 								},
 								index: null,
 							},
-							"EDITED_ITEM_STATE"
-						),
-						btnAddClicked(false, props.type, "BTN_ADD_CLICKED")
+							actionTypes.EDITED_ITEM_STATE
+						)
+					);
+					dispatch(
+						btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED)
 					);
 					//setInputEditedItemVisible(false);
 				}
@@ -417,7 +435,7 @@ function BtnRemoveNewItem(props) {
 		<IconButton
 			aria-label="remove"
 			onClick={handleClick}
-			title="Remove new item"
+			title="Remove item"
 			style={{ color: "#fff" }}
 		>
 			<RemoveCircleIcon />

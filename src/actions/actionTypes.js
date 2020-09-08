@@ -1,0 +1,12 @@
+export const ADD_PLAYER = "ADD_PLAYER";
+export const DELETE_PLAYER = "DELETE_PLAYER";
+
+export const ADD_TOPIC = "ADD_TOPIC";
+export const DELETE_TOPIC = "DELETE_TOPIC";
+
+export const DELETE_SELECTED_ITEM = "DELETE_SELECTED_ITEM";
+export const ADD_SELECTED_ITEM = "ADD_SELECTED_ITEM";
+
+export const BTN_ADD_CLICKED = "BTN_ADD_CLICKED";
+
+export const EDITED_ITEM_STATE = "EDITED_ITEM_STATE";
