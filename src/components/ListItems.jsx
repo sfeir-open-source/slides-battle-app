@@ -45,6 +45,20 @@ export const ListItems = (props) => {
 		if (isBtnAddClicked && props.type === typeOfItem) {
 			if (inputEl.current.value === "") {
 				// @TODO Add Error Class
+				dispatch(
+					setEditedItemState(
+						{
+							item: null,
+							input: {
+								value: "",
+								isError: false,
+							},
+							index: null,
+							type: props.type,
+						},
+						actionTypes.EDITED_ITEM_STATE
+					)
+				);
 				//dispatch(btnAddClicked(false, props.type, "BTN_ADD_CLICKED"));
 			}
 			if (inputEl.current.value !== "") {
@@ -82,7 +96,11 @@ export const ListItems = (props) => {
 
 	const handleClickAdd = (e) => {
 		//const { isBtnAddClicked } = clickedButtonContext;
+
+		const value = e.currentTarget.value;
+
 		dispatch(btnAddClicked(true, props.type, actionTypes.BTN_ADD_CLICKED));
+
 		/*if (isBtnAddClicked) {
 			const previousSiblingElement = e.currentTarget.previousElementSibling;
 			setPreviousSibling(previousSiblingElement);
@@ -106,6 +124,7 @@ export const ListItems = (props) => {
 					input: {
 						value: "",
 						isVisible: false,
+						isError: false,
 					},
 					index: null,
 					type: props.type,
@@ -125,6 +144,7 @@ export const ListItems = (props) => {
 					input: {
 						value: "",
 						isVisible: false,
+						isError: false,
 					},
 					index: null,
 					type: props.type,
@@ -144,6 +164,7 @@ export const ListItems = (props) => {
 					input: {
 						value,
 						isVisible: false,
+						isError: false,
 					},
 					index: null,
 					type: props.type,
@@ -170,6 +191,7 @@ export const ListItems = (props) => {
 						input: {
 							value: "",
 							isVisible: false,
+							isError: false,
 						},
 						index: null,
 						type: props.type,
@@ -229,7 +251,7 @@ export const ListItems = (props) => {
 		const items = props.items;
 		const value = e.target.value;
 		const index = items.indexOf(editedItemState.item);
-		console.log("index", index);
+
 		if (e.key === "Enter" && value !== "") {
 			items[index] = value;
 			//setEditedItem(element);
@@ -276,6 +298,25 @@ export const ListItems = (props) => {
 		}
 	};
 
+	const handleBlur = (e) => {
+		const value = e.target.value;
+		dispatch(
+			setEditedItemState(
+				{
+					item: value,
+					input: {
+						value,
+						isVisible: true,
+						isError: value === "" ? true : false,
+					},
+					index: null,
+					type: props.type,
+				},
+				actionTypes.EDITED_ITEM_STATE
+			)
+		);
+	};
+
 	// Source : https://codesandbox.io/s/outside-alerter-hooks-lmr2y?module=/src/OutsideAlerter.js&file=/src/OutsideAlerter.js:857-873
 	const useOutsideEvent = (ref) => {
 		useEffect(() => {
@@ -288,6 +329,7 @@ export const ListItems = (props) => {
 								input: {
 									value: "",
 									isVisible: false,
+									isError: false,
 								},
 								index: null,
 							},
@@ -339,6 +381,8 @@ export const ListItems = (props) => {
 				onClickAdd={handleClickAdd}
 				remove={handleClickRemove}
 				inputRef={inputEl}
+				isError={editedItemState.input.isError}
+				onBlur={handleBlur}
 			/>
 		</div>
 	);
@@ -454,6 +498,8 @@ function AddButton(props) {
 		onClickAdd,
 		remove,
 		inputRef,
+		isError,
+		onBlur,
 	} = props;
 	return isClicked && context.typeOfItem === type ? (
 		<React.Fragment>
@@ -464,6 +510,8 @@ function AddButton(props) {
 				onKeyPress={onKeyPress}
 				onChange={onChange}
 				ref={inputRef}
+				className={isError ? "error" : ""}
+				onBlur={onBlur}
 			/>
 			<BtnAddNewItem onClick={onClickAdd} />
 			<BtnRemoveNewItem onClick={remove} />
