@@ -7,13 +7,11 @@ import ListItems from "./ListItems";
 
 import getTopics from "../selectors/getTopics";
 import getPlayers from "../selectors/getPlayers";
-import getSelectedTopics from "../selectors/getSelectedTopics";
 import getEditedItemState from "../selectors/getEditedItemState";
 
 function Configuration() {
 	const topics = useSelector(getTopics);
 	const players = useSelector(getPlayers);
-	const selectedTopics = useSelector(getSelectedTopics);
 	const editedItemState = useSelector(getEditedItemState);
 
 	return (
@@ -24,7 +22,6 @@ function Configuration() {
 					<ListItems
 						items={topics}
 						type="topics"
-						selectedItems={selectedTopics}
 						editedItemState={editedItemState}
 					>
 						Liste des thèmes
