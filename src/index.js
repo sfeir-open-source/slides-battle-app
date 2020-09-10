@@ -1,43 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {
-  Provider
-} from 'react-redux';
-import {
-  createStore
-} from 'redux';
-import {
-  composeWithDevTools
-} from 'redux-devtools-extension';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-import rootReducer from './reducers/rootReducer';
+import rootReducer from "./reducers/rootReducer";
 
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from "./serviceWorker";
 
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import Routes from './components/Routes';
+import Routes from "./components/Routes";
 
 const composeEnhancers = composeWithDevTools({
-  trace: true,
-  traceLimit: 25,
+	trace: true,
+	traceLimit: 25,
 });
 
 const store = createStore(rootReducer, composeEnhancers());
 
-ReactDOM.render( <
-  Provider store = {
-    store
-  } >
-  <
-  React.StrictMode >
-  <
-  Routes / >
-  <
-  /React.StrictMode> <
-  /Provider>,
-  document.getElementById('root')
+ReactDOM.render(
+	<Provider store={store}>
+		<React.StrictMode>
+			<Routes />
+		</React.StrictMode>
+	</Provider>,
+	document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

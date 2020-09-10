@@ -514,7 +514,7 @@ function UlListItems(props) {
 						value={inputEditedItem.value}
 						onKeyPress={onEditKeyPress}
 						onChange={onEditChange}
-						id={item.id}
+						id={typeItem + "-" + item.id}
 					/>
 				) : (
 					<span
