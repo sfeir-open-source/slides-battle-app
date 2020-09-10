@@ -48,7 +48,11 @@ export const ListItems = (props) => {
 				dispatch(
 					setEditedItemState(
 						{
-							item: null,
+							item: {
+								id: "",
+								label: "",
+								available: false,
+							},
 							input: {
 								value: "",
 								isError: false,
@@ -73,7 +77,7 @@ export const ListItems = (props) => {
 	const handleDelete = (e) => {
 		const index = e.currentTarget.value;
 		const items = props.items;
-		const selectedItem = items[index];
+		const selectedItem = items[index].id;
 		const selectedItems = props.selectedItems || [];
 		const exist = selectedItems.includes(selectedItem);
 		let action =
@@ -120,7 +124,11 @@ export const ListItems = (props) => {
 		dispatch(
 			setEditedItemState(
 				{
-					item: null,
+					item: {
+						id: "",
+						label: "",
+						available: false,
+					},
 					input: {
 						value: "",
 						isVisible: false,
@@ -140,7 +148,11 @@ export const ListItems = (props) => {
 		dispatch(
 			setEditedItemState(
 				{
-					item: null,
+					item: {
+						id: "",
+						label: "",
+						available: false,
+					},
 					input: {
 						value: "",
 						isVisible: false,
@@ -160,7 +172,11 @@ export const ListItems = (props) => {
 		dispatch(
 			setEditedItemState(
 				{
-					item: null,
+					item: {
+						id: "",
+						label: "",
+						available: false,
+					},
 					input: {
 						value,
 						isVisible: false,
@@ -181,13 +197,24 @@ export const ListItems = (props) => {
 				props.type === "topics"
 					? actionTypes.ADD_TOPIC
 					: actionTypes.ADD_PLAYER;
-
-			dispatch(addItem(editedItemState.input.value, action));
+			// replace accents
+			// camel case
+			const id = e.target.id;
+			const item = {
+				id,
+				label: editedItemState.input.value,
+				available: false,
+			};
+			dispatch(addItem(item, action));
 			dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
 			dispatch(
 				setEditedItemState(
 					{
-						item: null,
+						item: {
+							id: "",
+							label: "",
+							available: false,
+						},
 						input: {
 							value: "",
 							isVisible: false,
@@ -206,8 +233,10 @@ export const ListItems = (props) => {
 
 	// Initialize edition
 	const handleClickEdit = (e) => {
-		const element = e.target.innerHTML;
-		const index = props.items.indexOf(element);
+		const label = e.target.innerHTML;
+		const id = e.target.id;
+		const index = props.items.findIndex((item) => item.id === id);
+
 		//setEditedItem(element);
 		//setEditedItemIndex(props.items.indexOf(element));
 		//setInputEditedItem(element);
@@ -215,9 +244,13 @@ export const ListItems = (props) => {
 		dispatch(
 			setEditedItemState(
 				{
-					item: element,
+					item: {
+						id,
+						label,
+						available: false,
+					},
 					input: {
-						value: element,
+						value: label,
 						isVisible: true,
 					},
 					index: index,
@@ -229,14 +262,21 @@ export const ListItems = (props) => {
 	};
 
 	const handleEditChange = (e) => {
-		const value = e.target.value;
+		const label = e.target.value;
 		//setInputEditedItem(value);
+
+		const id = e.target.id;
+
 		dispatch(
 			setEditedItemState(
 				{
-					item: props.editedItemState.item,
+					item: {
+						id,
+						label,
+						available: false,
+					},
 					input: {
-						value,
+						label,
 						isVisible: true,
 					},
 					index: props.editedItemState.index,
@@ -249,21 +289,46 @@ export const ListItems = (props) => {
 
 	const handleEditKeyPress = (e) => {
 		const items = props.items;
-		const value = e.target.value;
-		const index = items.indexOf(editedItemState.item);
-
-		if (e.key === "Enter" && value !== "") {
-			items[index] = value;
+		const label = e.target.value;
+		const id = e.target.id;
+		const index = items.findIndex((item) => item.id === id);
+		if (e.key === "Enter") {
+			dispatch(
+				setEditedItemState(
+					{
+						input: {
+							label,
+							isVisible: true,
+							isError: label === "" ? true : false,
+						},
+						index,
+						type: props.type,
+					},
+					actionTypes.EDITED_ITEM_STATE
+				)
+			);
+		}
+		if (e.key === "Enter" && label !== "") {
+			items[index] = {
+				id,
+				label,
+				available: false,
+			};
 			//setEditedItem(element);
 			//setEditedItemIndex(props.items.indexOf(element));
 			//setInputEditedItem(element);
 			dispatch(
 				setEditedItemState(
 					{
-						item: value,
+						item: {
+							id,
+							label,
+							available: false,
+						},
 						input: {
-							value,
+							label,
 							isVisible: false,
+							isError: label === "" ? true : false,
 						},
 						index,
 						type: props.type,
@@ -282,9 +347,9 @@ export const ListItems = (props) => {
 		const index = e.target.value;
 		const { items, selectedItems } = props;
 		const selectedTopic = items[index];
-		const exist = selectedItems.includes(selectedTopic);
-
-		if (exist) {
+		const available = items[index].available;
+		if (available) {
+			selectedTopic.available = false;
 			dispatch(
 				deleteSelectedTopicsItem(
 					selectedTopic,
@@ -292,6 +357,7 @@ export const ListItems = (props) => {
 				)
 			);
 		} else {
+			selectedTopic.available = true;
 			dispatch(
 				addSelectedTopicsItem(selectedTopic, actionTypes.ADD_SELECTED_ITEM)
 			);
@@ -300,10 +366,15 @@ export const ListItems = (props) => {
 
 	const handleBlur = (e) => {
 		const value = e.target.value;
+		const id = e.target.id;
 		dispatch(
 			setEditedItemState(
 				{
-					item: value,
+					item: {
+						id: id,
+						label: value,
+						available: false,
+					},
 					input: {
 						value,
 						isVisible: true,
@@ -325,7 +396,7 @@ export const ListItems = (props) => {
 					dispatch(
 						setEditedItemState(
 							{
-								item: null,
+								item: {},
 								input: {
 									value: "",
 									isVisible: false,
@@ -360,8 +431,7 @@ export const ListItems = (props) => {
 				items={items}
 				typeItem={type}
 				editedItemIndex={editedItemState.index}
-				inputEditedItem={editedItemState.input.value}
-				inputEditedItemVisible={editedItemState.input.isVisible}
+				inputEditedItem={editedItemState.input}
 				typeEditedItem={editedItemState.type}
 				onDeleteItem={handleDelete}
 				onSelectItem={handleCheck}
@@ -388,13 +458,27 @@ export const ListItems = (props) => {
 	);
 };
 
+function toCleanId(string) {
+	if (string === undefined) {
+		return;
+	}
+	let newString = string
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.replace(/\W+(.)/g, function (match, char) {
+			return char.toUpperCase();
+		});
+	newString = newString.charAt(0).toUpperCase() + newString.slice(1);
+
+	return newString;
+}
+
 function UlListItems(props) {
 	const {
 		items,
 		typeItem,
 		editedItemIndex,
 		inputEditedItem,
-		inputEditedItemVisible,
 		typeEditedItem,
 		onDeleteItem,
 		onSelectItem,
@@ -408,7 +492,7 @@ function UlListItems(props) {
 	onClickOutside(wrapperRef);
 
 	const className = typeItem === "players" ? " p-2" : "";
-
+	const inputClassName = "form-control col-md-10";
 	const listItems = items.map((item, index) => (
 		<li
 			key={index}
@@ -420,7 +504,7 @@ function UlListItems(props) {
 				{typeItem === "topics" ? (
 					<input
 						type="checkbox"
-						name={item}
+						name={item.label}
 						className="form-check-input"
 						onClick={onSelectItem}
 						value={index}
@@ -429,19 +513,24 @@ function UlListItems(props) {
 					""
 				)}
 				{editedItemIndex === index &&
-				inputEditedItemVisible &&
+				inputEditedItem.isVisible &&
 				typeItem === typeEditedItem ? (
 					<input
 						ref={wrapperRef}
 						type="text"
-						className="form-control col-md-10"
-						value={inputEditedItem}
+						className={inputEditedItem.isError ? "error " : "" + inputClassName}
+						value={inputEditedItem.value}
 						onKeyPress={onEditKeyPress}
 						onChange={onEditChange}
+						id={item.id}
 					/>
 				) : (
-					<span className="form-check-label" onClick={onClickEditedItem}>
-						{item}
+					<span
+						className="form-check-label"
+						id={item.id}
+						onClick={onClickEditedItem}
+					>
+						{item.label}
 					</span>
 				)}
 			</div>

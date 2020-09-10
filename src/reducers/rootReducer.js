@@ -1,5 +1,45 @@
-const TOPICS = ["Histoire", "Cinéma", "Bande dessiné", "Series US"];
-const PLAYERS = ["Batman", "Catwoman", "Superman", "Supergirl"];
+const TOPICS = [{
+		id: "1",
+		label: "Histoire",
+		available: false
+	},
+	{
+		id: "2",
+		label: "Cinéma",
+		available: false
+	},
+	{
+		id: "3",
+		label: "Bande dessiné",
+		available: false
+	},
+	{
+		id: "4",
+		label: "Séries US",
+		available: false
+	}
+];
+const PLAYERS = [{
+		id: "1",
+		label: "Batman",
+		available: false
+	},
+	{
+		id: "2",
+		label: "Catwoman",
+		available: false
+	},
+	{
+		id: "3",
+		label: "Superman",
+		available: false
+	},
+	{
+		id: "4",
+		label: "Supergirl",
+		available: false
+	}
+];
 const initialState = {
 	topics: TOPICS,
 	players: PLAYERS,
@@ -39,17 +79,17 @@ const rootReducer = (state = initialState, action) => {
 				topics: [...state.topics, action.item],
 			};
 		case "DELETE_SELECTED_ITEM":
-			newSelectedTopics = state.selectedTopics.filter((selectedTopic) => {
-				return action.item !== selectedTopic;
-			});
+			// newSelectedTopics = state.selectedTopics.filter((selectedTopic) => {
+			// 	return action.item !== selectedTopic;
+			// });
 			return {
 				...state,
-				selectedTopics: newSelectedTopics,
+				topics: state.topics,
 			};
 		case "ADD_SELECTED_ITEM":
 			return {
 				...state,
-				selectedTopics: [...state.selectedTopics, action.item],
+				topics: state.topics,
 			};
 		case "DELETE_PLAYER":
 			newPlayers = state.players.filter((player) => {
