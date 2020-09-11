@@ -1,44 +1,46 @@
-const TOPICS = [{
+const TOPICS = [
+	{
 		id: "1",
 		label: "Histoire",
-		available: false
+		available: false,
 	},
 	{
 		id: "2",
 		label: "Cinéma",
-		available: false
+		available: false,
 	},
 	{
 		id: "3",
 		label: "Bande dessiné",
-		available: false
+		available: false,
 	},
 	{
 		id: "4",
 		label: "Séries US",
-		available: false
-	}
+		available: false,
+	},
 ];
-const PLAYERS = [{
+const PLAYERS = [
+	{
 		id: "1",
 		label: "Batman",
-		available: false
+		available: false,
 	},
 	{
 		id: "2",
 		label: "Catwoman",
-		available: false
+		available: false,
 	},
 	{
 		id: "3",
 		label: "Superman",
-		available: false
+		available: false,
 	},
 	{
 		id: "4",
 		label: "Supergirl",
-		available: false
-	}
+		available: false,
+	},
 ];
 const initialState = {
 	topics: TOPICS,
@@ -62,7 +64,6 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
 	let newTopics = [];
 	let newPlayers = [];
-	let newSelectedTopics = [];
 
 	switch (action.type) {
 		case "DELETE_TOPIC":

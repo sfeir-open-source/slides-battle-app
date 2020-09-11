@@ -101,8 +101,6 @@ export const ListItems = (props) => {
 	const handleClickAdd = (e) => {
 		//const { isBtnAddClicked } = clickedButtonContext;
 
-		const value = e.currentTarget.value;
-
 		dispatch(btnAddClicked(true, props.type, actionTypes.BTN_ADD_CLICKED));
 
 		/*if (isBtnAddClicked) {
@@ -117,7 +115,9 @@ export const ListItems = (props) => {
 
 	const handleSubmit = () => {
 		let action =
-			props.type === "topics" ? actionTypes.ADD_TOPIC : actionTypes.ADD_PLAYER;
+			props.type === "topics"
+				? actionTypes.ADD_TOPIC
+				: actionTypes.ADD_PLAYER;
 
 		dispatch(addItem(editedItemState.input.value, action));
 		dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
@@ -206,7 +206,9 @@ export const ListItems = (props) => {
 				available: false,
 			};
 			dispatch(addItem(item, action));
-			dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
+			dispatch(
+				btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED)
+			);
 			dispatch(
 				setEditedItemState(
 					{
@@ -345,7 +347,7 @@ export const ListItems = (props) => {
 
 	const handleCheck = (e) => {
 		const index = e.target.value;
-		const { items, selectedItems } = props;
+		const { items } = props;
 		const selectedTopic = items[index];
 		const available = items[index].available;
 		if (available) {
@@ -359,7 +361,10 @@ export const ListItems = (props) => {
 		} else {
 			selectedTopic.available = true;
 			dispatch(
-				addSelectedTopicsItem(selectedTopic, actionTypes.ADD_SELECTED_ITEM)
+				addSelectedTopicsItem(
+					selectedTopic,
+					actionTypes.ADD_SELECTED_ITEM
+				)
 			);
 		}
 	};
@@ -408,7 +413,11 @@ export const ListItems = (props) => {
 						)
 					);
 					dispatch(
-						btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED)
+						btnAddClicked(
+							false,
+							props.type,
+							actionTypes.BTN_ADD_CLICKED
+						)
 					);
 					//setInputEditedItemVisible(false);
 				}
@@ -458,21 +467,6 @@ export const ListItems = (props) => {
 	);
 };
 
-function toCleanId(string) {
-	if (string === undefined) {
-		return;
-	}
-	let newString = string
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.replace(/\W+(.)/g, function (match, char) {
-			return char.toUpperCase();
-		});
-	newString = newString.charAt(0).toUpperCase() + newString.slice(1);
-
-	return newString;
-}
-
 function UlListItems(props) {
 	const {
 		items,
@@ -498,8 +492,7 @@ function UlListItems(props) {
 			key={index}
 			className={
 				"form-check d-flex justify-content-between item-row" + className
-			}
-		>
+			}>
 			<div className="form-group">
 				{typeItem === "topics" ? (
 					<input
@@ -518,7 +511,11 @@ function UlListItems(props) {
 					<input
 						ref={wrapperRef}
 						type="text"
-						className={inputEditedItem.isError ? "error " : "" + inputClassName}
+						className={
+							inputEditedItem.isError
+								? "error "
+								: "" + inputClassName
+						}
 						value={inputEditedItem.value}
 						onKeyPress={onEditKeyPress}
 						onChange={onEditChange}
@@ -528,8 +525,7 @@ function UlListItems(props) {
 					<span
 						className="form-check-label"
 						id={item.id}
-						onClick={onClickEditedItem}
-					>
+						onClick={onClickEditedItem}>
 						{item.label}
 					</span>
 				)}
@@ -538,8 +534,7 @@ function UlListItems(props) {
 				aria-label="delete"
 				onClick={onDeleteItem}
 				value={index}
-				style={{ color: "#fff" }}
-			>
+				style={{ color: "#fff" }}>
 				<DeleteIcon />
 			</IconButton>
 		</li>
@@ -555,8 +550,7 @@ function BtnAddNewItem(props) {
 			aria-label="add"
 			onClick={handleClick}
 			title="Add new item"
-			style={{ color: "#fff" }}
-		>
+			style={{ color: "#fff" }}>
 			<AddCircleRoundedIcon />
 		</IconButton>
 	);
@@ -569,8 +563,7 @@ function BtnRemoveNewItem(props) {
 			aria-label="remove"
 			onClick={handleClick}
 			title="Remove item"
-			style={{ color: "#fff" }}
-		>
+			style={{ color: "#fff" }}>
 			<RemoveCircleIcon />
 		</IconButton>
 	);
