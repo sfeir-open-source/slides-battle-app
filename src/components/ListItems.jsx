@@ -199,7 +199,7 @@ export const ListItems = (props) => {
 					: actionTypes.ADD_PLAYER;
 			// replace accents
 			// camel case
-			const id = getLastItem() + 1;
+			const id = getLastItem(props) + 1;
 			const item = {
 				id,
 				label: editedItemState.input.value,
@@ -467,7 +467,7 @@ export const ListItems = (props) => {
 	);
 };
 
-function getLastItem() {
+function getLastItem(props) {
 	const items = props.items;
 	const lastItem = items[items.length - 1];
 	return parseInt(lastItem.id, 10);
