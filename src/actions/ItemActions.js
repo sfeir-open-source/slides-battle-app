@@ -1,8 +1,21 @@
-export const deleteItem = (item, DELETE_ACTION) => ({
-    type: DELETE_ACTION,
-    item
-});
-export const addItem = (item, ADD_ACTION) => ({
-    type: ADD_ACTION,
-    item
-});
+import * as actionTypes from "../actions/actionTypes";
+
+export const deleteItem = (item, type) => {
+	const action =
+		type === "topics"
+			? actionTypes.DELETE_TOPIC
+			: actionTypes.DELETE_PLAYER;
+	return {
+		type: action,
+		item,
+	};
+};
+
+export const addItem = (item, type) => {
+	const action =
+		type === "topics" ? actionTypes.ADD_TOPIC : actionTypes.ADD_PLAYER;
+	return {
+		type: action,
+		item,
+	};
+};

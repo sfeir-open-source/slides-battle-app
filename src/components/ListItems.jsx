@@ -31,7 +31,7 @@ export const ListItems = (props) => {
 	//const [inputEditedItem, setInputEditedItem] = useState("");
 	//const [inputNewItem, setInputNewItem] = useState("");
 
-	const editedItemState = props.editedItemState;
+	const { editedItemState } = props;
 
 	const clickedButtonContext = useSelector(getClickedButtonContext);
 
@@ -41,8 +41,9 @@ export const ListItems = (props) => {
 
 	useEffect(() => {
 		const { isBtnAddClicked, typeOfItem } = clickedButtonContext;
+		const { type } = props;
 
-		if (isBtnAddClicked && props.type === typeOfItem) {
+		if (isBtnAddClicked && type === typeOfItem) {
 			if (inputEl.current.value === "") {
 				// @TODO Add Error Class
 				dispatch(
@@ -58,7 +59,7 @@ export const ListItems = (props) => {
 								isError: false,
 							},
 							index: null,
-							type: props.type,
+							type,
 						},
 						actionTypes.EDITED_ITEM_STATE
 					)
@@ -76,14 +77,10 @@ export const ListItems = (props) => {
 
 	const handleDelete = (e) => {
 		const index = e.currentTarget.value;
-		const items = props.items;
+		const { items, type } = props;
 		const selectedItem = items[index].id;
 		const selectedItems = props.selectedItems || [];
 		const exist = selectedItems.includes(selectedItem);
-		let action =
-			props.type === "topics"
-				? actionTypes.DELETE_TOPIC
-				: actionTypes.DELETE_PLAYER;
 
 		// delete item from selectedItems too
 		if (exist) {
@@ -95,13 +92,13 @@ export const ListItems = (props) => {
 				)
 			);
 		}
-		dispatch(deleteItem(items[index], action));
+		dispatch(deleteItem(items[index], type));
 	};
 
 	const handleClickAdd = (e) => {
 		//const { isBtnAddClicked } = clickedButtonContext;
-
-		dispatch(btnAddClicked(true, props.type, actionTypes.BTN_ADD_CLICKED));
+		const { type } = props;
+		dispatch(btnAddClicked(true, type, actionTypes.BTN_ADD_CLICKED));
 
 		/*if (isBtnAddClicked) {
 			const previousSiblingElement = e.currentTarget.previousElementSibling;
@@ -114,13 +111,10 @@ export const ListItems = (props) => {
 	};
 
 	const handleSubmit = () => {
-		let action =
-			props.type === "topics"
-				? actionTypes.ADD_TOPIC
-				: actionTypes.ADD_PLAYER;
+		const { type } = props;
 
-		dispatch(addItem(editedItemState.input.value, action));
-		dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
+		dispatch(addItem(editedItemState.input.value, type));
+		dispatch(btnAddClicked(false, type, actionTypes.BTN_ADD_CLICKED));
 		dispatch(
 			setEditedItemState(
 				{
@@ -135,7 +129,7 @@ export const ListItems = (props) => {
 						isError: false,
 					},
 					index: null,
-					type: props.type,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -144,7 +138,8 @@ export const ListItems = (props) => {
 
 	const handleClickRemove = (e) => {
 		//setBtnAddNewItemClicked(false);
-		dispatch(btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED));
+		const { type } = props;
+		dispatch(btnAddClicked(false, type, actionTypes.BTN_ADD_CLICKED));
 		dispatch(
 			setEditedItemState(
 				{
@@ -159,7 +154,7 @@ export const ListItems = (props) => {
 						isError: false,
 					},
 					index: null,
-					type: props.type,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -169,6 +164,7 @@ export const ListItems = (props) => {
 
 	const handleChange = (e) => {
 		const value = e.currentTarget.value;
+		const { type } = props;
 		dispatch(
 			setEditedItemState(
 				{
@@ -183,7 +179,7 @@ export const ListItems = (props) => {
 						isError: false,
 					},
 					index: null,
-					type: props.type,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -193,22 +189,18 @@ export const ListItems = (props) => {
 
 	const handleKeyPress = (e) => {
 		if (e.key === "Enter" && e.target.value !== "") {
-			let action =
-				props.type === "topics"
-					? actionTypes.ADD_TOPIC
-					: actionTypes.ADD_PLAYER;
 			// replace accents
 			// camel case
+
+			const { type } = props;
 			const id = getLastItem(props) + 1;
 			const item = {
 				id,
 				label: editedItemState.input.value,
 				available: false,
 			};
-			dispatch(addItem(item, action));
-			dispatch(
-				btnAddClicked(false, props.type, actionTypes.BTN_ADD_CLICKED)
-			);
+			dispatch(addItem(item, type));
+			dispatch(btnAddClicked(false, type, actionTypes.BTN_ADD_CLICKED));
 			dispatch(
 				setEditedItemState(
 					{
@@ -223,7 +215,7 @@ export const ListItems = (props) => {
 							isError: false,
 						},
 						index: null,
-						type: props.type,
+						type,
 					},
 					actionTypes.EDITED_ITEM_STATE
 				)
@@ -237,7 +229,8 @@ export const ListItems = (props) => {
 	const handleClickEdit = (e) => {
 		const label = e.target.innerHTML;
 		const id = e.target.id;
-		const index = props.items.findIndex((item) => item.id === id);
+		const { items, type } = props;
+		const index = items.findIndex((item) => item.id === id);
 
 		//setEditedItem(element);
 		//setEditedItemIndex(props.items.indexOf(element));
@@ -256,7 +249,7 @@ export const ListItems = (props) => {
 						isVisible: true,
 					},
 					index: index,
-					type: props.type,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -266,7 +259,7 @@ export const ListItems = (props) => {
 	const handleEditChange = (e) => {
 		const label = e.target.value;
 		//setInputEditedItem(value);
-
+		const { type, editedItemState } = props;
 		const id = e.target.id;
 
 		dispatch(
@@ -281,8 +274,8 @@ export const ListItems = (props) => {
 						label,
 						isVisible: true,
 					},
-					index: props.editedItemState.index,
-					type: props.type,
+					index: editedItemState.index,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -290,9 +283,9 @@ export const ListItems = (props) => {
 	};
 
 	const handleEditKeyPress = (e) => {
-		const items = props.items;
 		const label = e.target.value;
 		const id = e.target.id;
+		const { items, type } = props;
 		const index = items.findIndex((item) => item.id === id);
 		if (e.key === "Enter") {
 			dispatch(
@@ -304,7 +297,7 @@ export const ListItems = (props) => {
 							isError: label === "" ? true : false,
 						},
 						index,
-						type: props.type,
+						type,
 					},
 					actionTypes.EDITED_ITEM_STATE
 				)
@@ -333,7 +326,7 @@ export const ListItems = (props) => {
 							isError: label === "" ? true : false,
 						},
 						index,
-						type: props.type,
+						type,
 					},
 					actionTypes.EDITED_ITEM_STATE
 				)
@@ -372,6 +365,7 @@ export const ListItems = (props) => {
 	const handleBlur = (e) => {
 		const value = e.target.value;
 		const id = e.target.id;
+		const { type } = props;
 		dispatch(
 			setEditedItemState(
 				{
@@ -386,7 +380,7 @@ export const ListItems = (props) => {
 						isError: value === "" ? true : false,
 					},
 					index: null,
-					type: props.type,
+					type,
 				},
 				actionTypes.EDITED_ITEM_STATE
 			)
@@ -397,6 +391,7 @@ export const ListItems = (props) => {
 	const useOutsideEvent = (ref) => {
 		useEffect(() => {
 			function handleClickOutside(event) {
+				const { type } = props;
 				if (ref.current && !ref.current.contains(event.target)) {
 					dispatch(
 						setEditedItemState(
@@ -413,11 +408,7 @@ export const ListItems = (props) => {
 						)
 					);
 					dispatch(
-						btnAddClicked(
-							false,
-							props.type,
-							actionTypes.BTN_ADD_CLICKED
-						)
+						btnAddClicked(false, type, actionTypes.BTN_ADD_CLICKED)
 					);
 					//setInputEditedItemVisible(false);
 				}
@@ -453,7 +444,7 @@ export const ListItems = (props) => {
 			<AddButton
 				isClicked={clickedButtonContext.isBtnAddClicked}
 				context={clickedButtonContext}
-				type={props.type}
+				type={type}
 				inputValue={editedItemState.input.value}
 				onKeyPress={handleKeyPress}
 				onChange={handleChange}
@@ -468,7 +459,7 @@ export const ListItems = (props) => {
 };
 
 function getLastItem(props) {
-	const items = props.items;
+	const { items } = props;
 	const lastItem = items[items.length - 1];
 	return parseInt(lastItem.id, 10);
 }
