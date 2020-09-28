@@ -1,47 +1,45 @@
+import createUUID from "../helper";
+
 const TOPICS = [
 	{
-		id: "1",
 		label: "Histoire",
 		available: false,
 	},
 	{
-		id: "2",
 		label: "Cinéma",
 		available: false,
 	},
 	{
-		id: "3",
 		label: "Bande dessiné",
 		available: false,
 	},
 	{
-		id: "4",
 		label: "Séries US",
 		available: false,
 	},
 ];
 const PLAYERS = [
 	{
-		id: "1",
 		label: "Batman",
 		available: false,
 	},
 	{
-		id: "2",
 		label: "Catwoman",
 		available: false,
 	},
 	{
-		id: "3",
 		label: "Superman",
 		available: false,
 	},
 	{
-		id: "4",
 		label: "Supergirl",
 		available: false,
 	},
 ];
+
+TOPICS.map((topic) => (topic.id = createUUID()));
+PLAYERS.map((player) => (player.id = createUUID()));
+
 const initialState = {
 	topics: TOPICS,
 	players: PLAYERS,
