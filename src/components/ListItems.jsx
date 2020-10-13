@@ -491,7 +491,7 @@ function UlListItems(props) {
 				"form-check d-flex justify-content-between item-row" + className
 			}>
 			<div className="form-group">
-				{typeItem === "topics" ? (
+				{typeItem === "topics" && (
 					<input
 						type="checkbox"
 						name={item.label}
@@ -499,8 +499,6 @@ function UlListItems(props) {
 						onClick={onSelectItem}
 						value={index}
 					/>
-				) : (
-					""
 				)}
 				{editedItemIndex === index &&
 				inputEditedItem.isVisible &&
