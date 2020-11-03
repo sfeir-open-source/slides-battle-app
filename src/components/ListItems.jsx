@@ -19,6 +19,7 @@ import { btnAddClicked, setEditedItemState } from "../actions/listItemsActions";
 import getClickedButtonContext from "../selectors/getBtnAddClicked";
 
 import * as actionTypes from "../actions/actionTypes";
+import helper from "../helper";
 
 import "../App.css";
 
@@ -31,7 +32,7 @@ export const ListItems = (props) => {
 	//const [inputEditedItem, setInputEditedItem] = useState("");
 	//const [inputNewItem, setInputNewItem] = useState("");
 
-	const { editedItemState } = props;
+	const { editedItemState, items } = props;
 
 	const clickedButtonContext = useSelector(getClickedButtonContext);
 
@@ -78,21 +79,19 @@ export const ListItems = (props) => {
 	const handleDelete = (e) => {
 		const index = e.currentTarget.value;
 		const { items, type } = props;
-		const selectedItem = items[index].id;
-		const selectedItems = props.selectedItems || [];
-		const exist = selectedItems.includes(selectedItem);
-
-		// delete item from selectedItems too
-		if (exist) {
-			const indexSelectedItem = selectedItems.indexOf(selectedItem);
+		const selectedItem = items[index];
+		const available = selectedItem.available;
+		if (available) {
+			// selectedTopic.available = false;
 			dispatch(
 				deleteSelectedTopicsItem(
-					items[indexSelectedItem],
+					selectedItem,
 					actionTypes.DELETE_SELECTED_ITEM
 				)
 			);
 		}
 		dispatch(deleteItem(items[index], type));
+
 	};
 
 	const handleClickAdd = (e) => {
@@ -112,8 +111,12 @@ export const ListItems = (props) => {
 
 	const handleSubmit = () => {
 		const { type } = props;
-
-		dispatch(addItem(editedItemState.input.value, type));
+		const item = {
+			id: helper.createUUID(),
+			label: editedItemState.input.value,
+			available: false,
+		};
+		dispatch(addItem(item, type));
 		dispatch(btnAddClicked(false, type, actionTypes.BTN_ADD_CLICKED));
 		dispatch(
 			setEditedItemState(
@@ -193,9 +196,8 @@ export const ListItems = (props) => {
 			// camel case
 
 			const { type } = props;
-			const id = getLastItem(props) + 1;
 			const item = {
-				id,
+				id: helper.createUUID(),
 				label: editedItemState.input.value,
 				available: false,
 			};
@@ -342,9 +344,9 @@ export const ListItems = (props) => {
 		const index = e.target.value;
 		const { items } = props;
 		const selectedTopic = items[index];
-		const available = items[index].available;
+		const available = selectedTopic.available;
 		if (available) {
-			selectedTopic.available = false;
+			// selectedTopic.available = false;
 			dispatch(
 				deleteSelectedTopicsItem(
 					selectedTopic,
@@ -352,7 +354,7 @@ export const ListItems = (props) => {
 				)
 			);
 		} else {
-			selectedTopic.available = true;
+			// selectedTopic.available = true;
 			dispatch(
 				addSelectedTopicsItem(
 					selectedTopic,
@@ -423,7 +425,7 @@ export const ListItems = (props) => {
 		}, [ref]);
 	};
 
-	const { items, type, children } = props;
+	const { type, children } = props;
 	return (
 		<div className="container">
 			<h1>{children} </h1>
@@ -458,13 +460,7 @@ export const ListItems = (props) => {
 	);
 };
 
-function getLastItem(props) {
-	const { items } = props;
-	const lastItem = items[items.length - 1];
-	return parseInt(lastItem.id, 10);
-}
-
-function UlListItems(props) {
+export function UlListItems(props) {
 	const {
 		items,
 		typeItem,
@@ -486,6 +482,7 @@ function UlListItems(props) {
 	const inputClassName = "form-control col-md-10";
 	const listItems = items.map((item, index) => (
 		<li
+			data-testid={"item-"+typeItem+"-"+index}
 			key={index}
 			className={
 				"form-check d-flex justify-content-between item-row" + className
@@ -537,34 +534,23 @@ function UlListItems(props) {
 	return <ul className="p-0">{listItems}</ul>;
 }
 
-function BtnAddNewItem(props) {
-	const handleClick = props.onClick;
-
+function Button(props) {
+	const {onClick, id, title, label} = props;
 	return (
 		<IconButton
-			aria-label="add"
-			onClick={handleClick}
-			title="Add new item"
+			aria-label={label}
+			onClick={onClick}
+			id={id}
+			title={title}
 			style={{ color: "#fff" }}>
-			<AddCircleRoundedIcon />
+			{(label === 'add') ?
+			<AddCircleRoundedIcon /> :
+			<RemoveCircleIcon />}
 		</IconButton>
 	);
 }
 
-function BtnRemoveNewItem(props) {
-	const handleClick = props.onClick;
-	return (
-		<IconButton
-			aria-label="remove"
-			onClick={handleClick}
-			title="Remove item"
-			style={{ color: "#fff" }}>
-			<RemoveCircleIcon />
-		</IconButton>
-	);
-}
-
-function AddButton(props) {
+export function AddButton(props) {
 	const {
 		isClicked = false,
 		context,
@@ -578,23 +564,25 @@ function AddButton(props) {
 		isError,
 		onBlur,
 	} = props;
+	const typeFirstUpperCase = type.slice(0,1).toUpperCase() + type.slice(1, type.length);
 	return isClicked && context.typeOfItem === type ? (
 		<React.Fragment>
 			<input
 				type="text"
 				value={inputValue}
 				name="newItem"
+				id={"inputNewItem" + typeFirstUpperCase}
 				onKeyPress={onKeyPress}
 				onChange={onChange}
 				ref={inputRef}
 				className={isError ? "error" : ""}
 				onBlur={onBlur}
 			/>
-			<BtnAddNewItem onClick={onClickAdd} />
-			<BtnRemoveNewItem onClick={remove} />
+			<Button title="Add new item" label="add" onClick={onClickAdd} id={"btnAdd" + typeFirstUpperCase} />
+			<Button title="Remove item" label="remove" onClick={remove} id={"btnDel" + typeFirstUpperCase} />
 		</React.Fragment>
 	) : (
-		<BtnAddNewItem onClick={onClickAdd} />
+		<Button title="Add new item" label="add" onClick={onClickAdd} id={"btnAdd" + typeFirstUpperCase}  />
 	);
 }
 
