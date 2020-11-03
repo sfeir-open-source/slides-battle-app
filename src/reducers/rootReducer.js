@@ -1,4 +1,4 @@
-import createUUID from "../helper";
+import helper from "../helper";
 
 const TOPICS = [
 	{
@@ -37,13 +37,12 @@ const PLAYERS = [
 	},
 ];
 
-TOPICS.map((topic) => (topic.id = createUUID()));
-PLAYERS.map((player) => (player.id = createUUID()));
+TOPICS.map((topic) => (topic.id = helper.createUUID()));
+PLAYERS.map((player) => (player.id = helper.createUUID()));
 
-const initialState = {
+export const initialState = {
 	topics: TOPICS,
 	players: PLAYERS,
-	selectedTopics: [],
 	editedItemState: {
 		item: null,
 		input: {
@@ -59,14 +58,13 @@ const initialState = {
 	},
 };
 
-const rootReducer = (state = initialState, action) => {
+export const rootReducer = (state = initialState, action = {}) => {
 	let newTopics = [];
 	let newPlayers = [];
-
 	switch (action.type) {
 		case "DELETE_TOPIC":
 			newTopics = state.topics.filter((topic) => {
-				return action.item !== topic;
+				return action.item.id !== topic.id;
 			});
 			return {
 				...state,
@@ -77,22 +75,27 @@ const rootReducer = (state = initialState, action) => {
 				...state,
 				topics: [...state.topics, action.item],
 			};
-		case "DELETE_SELECTED_ITEM":
-			// newSelectedTopics = state.selectedTopics.filter((selectedTopic) => {
-			// 	return action.item !== selectedTopic;
-			// });
-			return {
-				...state,
-				topics: state.topics,
-			};
 		case "ADD_SELECTED_ITEM":
+			newTopics = state.topics.map(topic =>
+				topic.id === action.item.id
+					? { ...topic, available: true }
+					: topic);
 			return {
 				...state,
-				topics: state.topics,
+				topics: newTopics,
+			};
+		case "DELETE_SELECTED_ITEM":
+			newTopics = state.topics.map(topic =>
+				topic.id === action.item.id
+					? { ...topic, available: false }
+					: topic);
+			return {
+				...state,
+				topics: newTopics,
 			};
 		case "DELETE_PLAYER":
 			newPlayers = state.players.filter((player) => {
-				return action.item !== player;
+				return action.item.id !== player.id;
 			});
 			return {
 				...state,
@@ -110,11 +113,6 @@ const rootReducer = (state = initialState, action) => {
 					isBtnAddClicked: action.value,
 					typeOfItem: action.typeOfItem,
 				},
-			};
-		case "NEW_ITEM":
-			return {
-				...state,
-				newItem: action.value,
 			};
 		case "EDITED_ITEM_STATE":
 			return {
