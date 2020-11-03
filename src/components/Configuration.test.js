@@ -1,58 +1,54 @@
 import React from "react";
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 import { createStore } from "redux";
 import rootReducer from "../reducers/rootReducer";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import Configuration from "./Configuration";
+import helper from "../helper";
 
 const store = createStore(rootReducer);
-
 const TOPICS = [
 	{
-		id: "1",
 		label: "Histoire",
 		available: false,
 	},
 	{
-		id: "2",
 		label: "Cinéma",
 		available: false,
 	},
 	{
-		id: "3",
 		label: "Bande dessiné",
 		available: false,
 	},
 	{
-		id: "4",
 		label: "Séries US",
 		available: false,
 	},
 ];
 const PLAYERS = [
 	{
-		id: "1",
 		label: "Batman",
 		available: false,
 	},
 	{
-		id: "2",
 		label: "Catwoman",
 		available: false,
 	},
 	{
-		id: "3",
 		label: "Superman",
 		available: false,
 	},
 	{
-		id: "4",
 		label: "Supergirl",
 		available: false,
 	},
 ];
+
+jest.spyOn(helper, 'createUUID').mockReturnValue('uuidv4');
+TOPICS.map((topic) => (topic.id = helper.createUUID()));
+PLAYERS.map((player) => (player.id = helper.createUUID()));
 
 describe("<Configuration />", () => {
 	it("should have 2 components ListItems", (done) => {
@@ -116,8 +112,12 @@ describe("<ListItems />", () => {
 				</Router>
 			</Provider>
 		);
+
 		const received = wrapper.find("ListItems").get(1).props.items;
+		jest.spyOn(helper, 'createUUID').mockReturnValue('uuidv4');
+		received.map((item) => (item.id = helper.createUUID()));
 		const expected = PLAYERS;
+
 		expect(JSON.stringify(received)).toEqual(JSON.stringify(expected));
 		done();
 	});
@@ -136,44 +136,10 @@ describe("<ListItems />", () => {
 			</Provider>
 		);
 		const received = wrapper.find("ListItems").get(0).props.items;
+		jest.spyOn(helper, 'createUUID').mockReturnValue('uuidv4');
+		received.map((item) => (item.id = helper.createUUID()));
 		const expected = TOPICS;
 		expect(JSON.stringify(received)).toEqual(JSON.stringify(expected));
 		done();
 	});
 });
-/*
-describe('<Configuration />', () => {
-    beforeEach(() => {
-        //
-    });
-
-    it('renders without crashing', () => {
-        const wrapper = shallow(<Configuration store={store} />);
-    });
-
-    it('should have a lists of items', () => {
-
-        const history = createMemoryHistory();
-        const { container, getByText } = render(
-            <Provider store={store}>
-                <Router history={history}>
-                    <Configuration />
-                </Router>
-            </Provider>
-        )
-        console.log(container);
-        expect(container.innerHTML).to.contain('Battle')
-    });
-
-    it('should contain 2 lists of items', () => {
-        const wrapper = shallow(<Configuration store={store} />);
-        expect(wrapper.find(ListItems).length).to.equal(2);
-
-    });
-
-    it('should contain Header', () => {
-        const wrapper = shallow(<Configuration store={store} />);
-        expect(wrapper.find(Header).exists()).to.be.true;
-        expect(wrapper.find(Header).text('Slide Battle')).to.have.lengthOf(1);
-    });
-})*/
