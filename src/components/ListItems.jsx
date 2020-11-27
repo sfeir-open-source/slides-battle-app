@@ -192,9 +192,6 @@ export const ListItems = (props) => {
 
 	const handleKeyPress = (e) => {
 		if (e.key === "Enter" && e.target.value !== "") {
-			// replace accents
-			// camel case
-
 			const { type } = props;
 			const item = {
 				id: helper.createUUID(),
