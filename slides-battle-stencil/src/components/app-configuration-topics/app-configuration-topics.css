@@ -1,0 +1,7 @@
+h2, ul, label, button {
+    margin: 0 50px;
+}
+
+ul {
+    list-style: none;
+}

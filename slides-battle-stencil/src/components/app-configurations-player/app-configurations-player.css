@@ -1,0 +1,14 @@
+li {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows:  50% 50%;
+
+    margin: 10px 0;
+    padding: 5px;
+    border: solid 1px black;
+}
+
+li > * {
+    justify-self: center;
+    align-self: center;
+}
