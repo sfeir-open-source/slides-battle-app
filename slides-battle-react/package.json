@@ -56,6 +56,10 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-mock-store": "^1.5.4"
   },
-  "jest": { "coveragePathIgnorePatterns": ["<rootDir>/src/index.js", "<rootDir>/src/serviceWorker.js"] }
-
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.js",
+      "<rootDir>/src/serviceWorker.js"
+    ]
+  }
 }
