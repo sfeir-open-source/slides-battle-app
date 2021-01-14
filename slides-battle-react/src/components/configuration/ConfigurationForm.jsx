@@ -56,6 +56,7 @@ export const ConfigurationForm = ({ value, onSubmit, onCancel }) => {
             justifyContent: "space-between",
             padding: 10,
             width: 300,
+            backgroundColor: "white",
           }}
         >
           <input
