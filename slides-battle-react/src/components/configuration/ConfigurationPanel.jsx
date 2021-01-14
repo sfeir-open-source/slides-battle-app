@@ -6,12 +6,27 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
 import { Add, Edit, DeleteForever } from "@material-ui/icons";
 import { ConfigurationForm, useConfigurationForm } from "./ConfigurationForm";
-import { Loader } from "../layout";
-import { ConfigurationHeader } from "./ConfigurationHeader";
+import { Loader } from "../layout/Page";
+import { Header } from "../layout/Header";
+
+const PanelHeader = ({ header, setPayload }) => (
+  <Header
+    backgroundColor="#654f30"
+    header={header}
+    right={
+      <IconButton
+        color="secondary"
+        aria-label="add"
+        onClick={() => setPayload({ name: "", isEnabled: true })}
+      >
+        <Add />
+      </IconButton>
+    }
+  />
+);
 
 export const ConfigurationPanel = ({ header, values, remove, update, add }) => {
   const {
@@ -23,26 +38,23 @@ export const ConfigurationPanel = ({ header, values, remove, update, add }) => {
   } = useConfigurationForm(add, update);
 
   return (
-    <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
-      <ConfigurationHeader backgroundColor="#654f30">
-        <Typography
-          style={{ flex: "1 1 100%" }}
-          variant="h6"
-          color="secondary"
-          component="div"
-        >
-          {header}
-        </Typography>
-
-        <IconButton
-          color="secondary"
-          aria-label="add"
-          onClick={() => setPayload({ name: "" })}
-        >
-          <Add />
-        </IconButton>
-      </ConfigurationHeader>
-      <List style={{ backgroundColor: "white", padding: 0 }}>
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+      }}
+    >
+      <PanelHeader header={header} setPayload={setPayload} />
+      <List
+        style={{
+          backgroundColor: "white",
+          padding: 0,
+          height: 300,
+          maxHeight: 300,
+          overflowY: "scroll",
+        }}
+      >
         {values.map((value) => (
           <React.Fragment key={value.id}>
             <ListItem
@@ -52,24 +64,27 @@ export const ConfigurationPanel = ({ header, values, remove, update, add }) => {
               }}
             >
               <ListItemText primary={value.name} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  color="primary"
-                  aria-label="edit"
-                  onClick={() => setPayload(value)}
-                >
-                  <Edit />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  color="primary"
-                  aria-label="delete"
-                  onClick={() => remove(value)}
-                >
-                  <DeleteForever />
-                </IconButton>
-              </ListItemSecondaryAction>
+
+              {!value.isLocked && (
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    color="primary"
+                    aria-label="edit"
+                    onClick={() => setPayload(value)}
+                  >
+                    <Edit />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    color="primary"
+                    aria-label="delete"
+                    onClick={() => remove(value)}
+                  >
+                    <DeleteForever />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              )}
             </ListItem>
             <Divider />
           </React.Fragment>

@@ -1,10 +1,17 @@
-import styled from "styled-components";
+import React from "react";
+import { IconButton } from "@material-ui/core";
+import { Settings, Close } from "@material-ui/icons";
+import { Header } from "../layout/Header";
 
-export const ConfigurationHeader = styled.div`
-  display: flex;
-  flex: 1;
-  padding-left: 15px;
-  min-height: 48px;
-  align-items: center;
-  ${({ backgroundColor = "white" }) => `background-color: ${backgroundColor}`}
-`;
+export const ConfigurationHeader = ({ backgroundColor, onClick }) => (
+  <Header
+    backgroundColor={backgroundColor}
+    left={<Settings color="secondary" />}
+    header="Configuration"
+    right={
+      <IconButton color="secondary" aria-label="close" onClick={onClick}>
+        <Close />
+      </IconButton>
+    }
+  />
+);

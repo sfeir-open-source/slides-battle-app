@@ -1,10 +1,58 @@
-import { useState } from "react";
 import { useItemsManager } from "../items";
 
-export const useConfigurationManager = ({
-  defaultPlayers = [],
-  defaultThemes = [],
-}) => {
+export const useConfigurationManager = (
+  defaultPlayers = [
+    {
+      id: 1,
+      name: "Batman",
+      isEnabled: true,
+    },
+    {
+      id: 2,
+      name: "Joker",
+      isEnabled: true,
+    },
+    {
+      id: 3,
+      name: "Harley Quinn",
+      isEnabled: true,
+    },
+  ],
+  defaultThemes = [
+    {
+      id: 1,
+      name: "Speaker's Choice",
+      isEnabled: true,
+      isLocked: true,
+    },
+    {
+      id: 2,
+      name: "Public's Choice",
+      isEnabled: true,
+      isLocked: true,
+    },
+    {
+      id: 3,
+      name: "Comics",
+      isEnabled: true,
+    },
+    {
+      id: 4,
+      name: "Movies",
+      isEnabled: true,
+    },
+    {
+      id: 3,
+      name: "Culture",
+      isEnabled: true,
+    },
+    {
+      id: 4,
+      name: "Medical",
+      isEnabled: true,
+    },
+  ]
+) => {
   const {
     items: players,
     add: addPlayer,
@@ -19,12 +67,6 @@ export const useConfigurationManager = ({
     remove: removeTheme,
   } = useItemsManager(defaultThemes);
 
-  const [isConfigurationOpened, setConfigurationOpened] = useState(false);
-
-  const closeConfiguration = () => setConfigurationOpened(false);
-
-  const openConfiguration = () => setConfigurationOpened(true);
-
   return {
     players,
     addPlayer,
@@ -34,8 +76,5 @@ export const useConfigurationManager = ({
     addTheme,
     updateTheme,
     removeTheme,
-    isConfigurationOpened,
-    closeConfiguration,
-    openConfiguration,
   };
 };
