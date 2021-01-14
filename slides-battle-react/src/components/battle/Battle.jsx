@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Button } from "@material-ui/core";
+import { Button, Card } from "@material-ui/core";
 import { BattleHeader } from "./BattleHeader";
 import {
   PlayCircleOutline,
   HighlightOff,
   NavigateNext,
 } from "@material-ui/icons";
+import { Header } from "../layout/Header";
 
 export const Battle = ({
   isBattleEnabled,
@@ -79,11 +80,25 @@ export const Battle = ({
               }}
             >
               {!round.id ? null : (
-                <>
-                  <div>{`Round ${round.id}`}</div>
-                  <div>{`Player : ${round.player.name}`}</div>
-                  <div>{`Theme : ${round.theme.name}`}</div>
-                </>
+                <Card>
+                  <Header
+                    header={`Round ${round.id}`}
+                    backgroundColor="#654f30"
+                  />
+                  <div
+                    style={{
+                      padding: "10px",
+                      display: "grid",
+                      width: 300,
+                      gridTemplate: "auto / 100px auto",
+                    }}
+                  >
+                    <span style={{ fontWeight: "bold" }}>Player</span>
+                    <span>{round.player.name}</span>
+                    <span style={{ fontWeight: "bold" }}>Theme</span>
+                    <span>{round.theme.name}</span>
+                  </div>
+                </Card>
               )}
             </div>
             <div

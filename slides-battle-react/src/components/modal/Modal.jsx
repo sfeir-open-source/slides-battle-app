@@ -22,6 +22,7 @@ export const Modal = ({
       <Card
         variant="outlined"
         style={{
+          background: "rgba(255, 255, 255, 0.5)",
           position: "absolute",
           top: "50%",
           left: "50%",

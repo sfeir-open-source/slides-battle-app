@@ -48,7 +48,6 @@ export const ConfigurationPanel = ({ header, values, remove, update, add }) => {
       <PanelHeader header={header} setPayload={setPayload} />
       <List
         style={{
-          backgroundColor: "white",
           padding: 0,
           height: 300,
           maxHeight: 300,
