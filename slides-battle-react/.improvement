@@ -1,0 +1,6 @@
+1. UnitTests (JEST + Enzymes/Snapshots)
+2. Display error message when !isBattleEnabled
+3. Handle no duplicate Theme/Player
+4. Animation/Fun on Theme/Player selection
+5. Handle specific choice (Speaker/Public Choice)
+6. Timer ??
