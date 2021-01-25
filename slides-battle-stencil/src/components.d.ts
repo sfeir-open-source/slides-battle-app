@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IPlayerConfiguration, ITopicConfiguration } from "./interfaces";
+import { IItemConfiguration, IPlayerConfiguration, IPlayerGame, ITopicConfiguration, ITopicGame } from "./interfaces";
+import { RouterHistory } from "@stencil/router";
+import { GameStatusEnum } from "./enums";
 export namespace Components {
     interface AppConfigurationPlayers {
     }
@@ -20,6 +22,24 @@ export namespace Components {
         "topic": ITopicConfiguration;
     }
     interface AppGame {
+        "history": RouterHistory;
+    }
+    interface AppGameActions {
+        "disabledButton": () => Promise<void>;
+        "enabledButton": () => Promise<void>;
+        "gameStatus": GameStatusEnum;
+        "isReadyForNextTurn": boolean;
+    }
+    interface AppGameHeader {
+        "currentPlayer": IPlayerGame;
+        "currentTopic": ITopicGame;
+        "gameStatus": GameStatusEnum;
+        "isReadyForNextTurn": boolean;
+    }
+    interface AppGameWheels {
+        "drawNextRound": () => Promise<{ player: IPlayerGame; topic: ITopicGame; }>;
+        "players": ReadonlyArray<IPlayerGame>;
+        "topics": ReadonlyArray<ITopicGame>;
     }
     interface AppHeader {
     }
@@ -27,8 +47,8 @@ export namespace Components {
     }
     interface AppRandomWheel {
         "cursorSize": number;
-        "data": ReadonlyArray<string>;
-        "draw": () => Promise<unknown>;
+        "data": ReadonlyArray<IItemConfiguration>;
+        "draw": () => Promise<IItemConfiguration>;
         "height": number;
         "padding": number;
         "radius": number;
@@ -75,6 +95,24 @@ declare global {
         prototype: HTMLAppGameElement;
         new (): HTMLAppGameElement;
     };
+    interface HTMLAppGameActionsElement extends Components.AppGameActions, HTMLStencilElement {
+    }
+    var HTMLAppGameActionsElement: {
+        prototype: HTMLAppGameActionsElement;
+        new (): HTMLAppGameActionsElement;
+    };
+    interface HTMLAppGameHeaderElement extends Components.AppGameHeader, HTMLStencilElement {
+    }
+    var HTMLAppGameHeaderElement: {
+        prototype: HTMLAppGameHeaderElement;
+        new (): HTMLAppGameHeaderElement;
+    };
+    interface HTMLAppGameWheelsElement extends Components.AppGameWheels, HTMLStencilElement {
+    }
+    var HTMLAppGameWheelsElement: {
+        prototype: HTMLAppGameWheelsElement;
+        new (): HTMLAppGameWheelsElement;
+    };
     interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {
     }
     var HTMLAppHeaderElement: {
@@ -106,6 +144,9 @@ declare global {
         "app-configurations-player": HTMLAppConfigurationsPlayerElement;
         "app-configurations-topic": HTMLAppConfigurationsTopicElement;
         "app-game": HTMLAppGameElement;
+        "app-game-actions": HTMLAppGameActionsElement;
+        "app-game-header": HTMLAppGameHeaderElement;
+        "app-game-wheels": HTMLAppGameWheelsElement;
         "app-header": HTMLAppHeaderElement;
         "app-home": HTMLAppHomeElement;
         "app-random-wheel": HTMLAppRandomWheelElement;
@@ -130,6 +171,22 @@ declare namespace LocalJSX {
         "topic"?: ITopicConfiguration;
     }
     interface AppGame {
+        "history": RouterHistory;
+    }
+    interface AppGameActions {
+        "gameStatus"?: GameStatusEnum;
+        "isReadyForNextTurn"?: boolean;
+        "onApp-game-actions-click"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppGameHeader {
+        "currentPlayer"?: IPlayerGame;
+        "currentTopic"?: ITopicGame;
+        "gameStatus"?: GameStatusEnum;
+        "isReadyForNextTurn"?: boolean;
+    }
+    interface AppGameWheels {
+        "players"?: ReadonlyArray<IPlayerGame>;
+        "topics"?: ReadonlyArray<ITopicGame>;
     }
     interface AppHeader {
     }
@@ -137,7 +194,7 @@ declare namespace LocalJSX {
     }
     interface AppRandomWheel {
         "cursorSize"?: number;
-        "data"?: ReadonlyArray<string>;
+        "data"?: ReadonlyArray<IItemConfiguration>;
         "height"?: number;
         "padding"?: number;
         "radius"?: number;
@@ -153,6 +210,9 @@ declare namespace LocalJSX {
         "app-configurations-player": AppConfigurationsPlayer;
         "app-configurations-topic": AppConfigurationsTopic;
         "app-game": AppGame;
+        "app-game-actions": AppGameActions;
+        "app-game-header": AppGameHeader;
+        "app-game-wheels": AppGameWheels;
         "app-header": AppHeader;
         "app-home": AppHome;
         "app-random-wheel": AppRandomWheel;
@@ -169,6 +229,9 @@ declare module "@stencil/core" {
             "app-configurations-player": LocalJSX.AppConfigurationsPlayer & JSXBase.HTMLAttributes<HTMLAppConfigurationsPlayerElement>;
             "app-configurations-topic": LocalJSX.AppConfigurationsTopic & JSXBase.HTMLAttributes<HTMLAppConfigurationsTopicElement>;
             "app-game": LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
+            "app-game-actions": LocalJSX.AppGameActions & JSXBase.HTMLAttributes<HTMLAppGameActionsElement>;
+            "app-game-header": LocalJSX.AppGameHeader & JSXBase.HTMLAttributes<HTMLAppGameHeaderElement>;
+            "app-game-wheels": LocalJSX.AppGameWheels & JSXBase.HTMLAttributes<HTMLAppGameWheelsElement>;
             "app-header": LocalJSX.AppHeader & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-random-wheel": LocalJSX.AppRandomWheel & JSXBase.HTMLAttributes<HTMLAppRandomWheelElement>;

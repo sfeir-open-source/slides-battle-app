@@ -1,4 +1,5 @@
-import { Component, h, Host, Method, Prop, State } from "@stencil/core";
+import { Component, h, Host, Method, Prop, Watch } from "@stencil/core";
+import { IItemConfiguration } from "../../interfaces";
 import { generatePieSectionPathAttributes, generateTextDefPathAttributes, generateTextIds } from "./app-randon-wheel.utils";
 
 const COLORS = [
@@ -19,7 +20,9 @@ const COLORS = [
 })
 export class AppRandomWheel {
 
-    @Prop() data: ReadonlyArray<string> = [];
+    @Prop({
+
+    }) data: ReadonlyArray<IItemConfiguration> = [];
 
     @Prop() padding: number = 2;
 
@@ -33,7 +36,13 @@ export class AppRandomWheel {
 
     @Prop() rotationDuration: number = 3;
 
-    @State() activateRotation: boolean = false;
+    @Watch('data')
+    handler(newValue: ReadonlyArray<IItemConfiguration>, oldValue: ReadonlyArray<IItemConfiguration>) {
+        const isSame = oldValue.every(({ id }) => newValue.some(item => item.id === id));
+        this.hasToResetRotation = !isSame;
+    }
+
+    private wheelRotableContainerEl: SVGGElement;
 
     private hypCursor: number;
 
@@ -41,27 +50,21 @@ export class AppRandomWheel {
 
     private rotationDeg: number;
 
+    private hasToResetRotation: boolean;
+
     @Method()
-    async draw() {
-        return (new Promise((resolve, reject) => {
-            try {
-                const randomIndex = Math.floor(Math.random() * this.data.length + 1) - 1;
-                const randomTurnNumber = Math.floor(Math.random() * 20);
-                this.rotationDeg =
-                    360 *
-                    ((Math.random() - randomIndex - 1) / this.data.length -
-                        5 -
-                        randomTurnNumber);
-
-                this.activateRotation = true;
-
-                setTimeout(() => {
-                    resolve(this.data[randomIndex]);
-                }, this.rotationDuration * 1000);
-            } catch (error) {
-                reject(error);
-            }
-        }));
+    async draw(): Promise<IItemConfiguration> {
+        const randomIndex = Math.floor(Math.random() * this.data.length + 1) - 1;
+        const result = this.data[randomIndex];
+        const duration = this.rotationDuration * 1000;
+        const randomTurnNumber = Math.floor(Math.random() * 20);
+        this.rotationDeg =
+            360 *
+            ((Math.random() - randomIndex - 1) / this.data.length -
+                5 -
+                randomTurnNumber);
+        this.switchRotation(true);
+        return new Promise(resolve => setTimeout(resolve, duration, result));
     }
 
     componentWillRender() {
@@ -71,14 +74,20 @@ export class AppRandomWheel {
         this.viewBoxSize = 2 * this.padding + 2 * this.radius + this.hypCursor;
     }
 
-    private getRotableElementStyle() {
-        const styles: { [key: string]: string } = {
-            transition: `transform ${this.rotationDuration}s cubic-bezier(0, 0, 0, 1)`,
-        };
-        if (this.activateRotation) {
-            styles.transform = `rotate(${this.rotationDeg}deg)`;
+    componentDidRender() {
+        /**
+         * @TODO Rethink rotatation reset
+         */
+        if (this.hasToResetRotation) {
+            this.hasToResetRotation = false;
+            this.switchRotation(false);
         }
-        return styles;
+    }
+
+    private switchRotation(bool: boolean) {
+        const transition = `transition: transform ${this.rotationDuration}s cubic-bezier(0, 0, 0, 1);`;
+        const transform = `transform : rotate(${this.rotationDeg}deg);`;
+        this.wheelRotableContainerEl.setAttribute('style', bool ? transition + transform : '');
     }
 
     private renderPathsAttributes() {
@@ -94,7 +103,7 @@ export class AppRandomWheel {
 
     private renderText() {
         return generateTextIds(this.data.length).map((value, index) => (<text dominant-baseline="middle">
-            <textPath href={`#${value}`}>{this.data[index]}</textPath>
+            <textPath href={`#${value}`}>{this.data[index].label}</textPath>
         </text>)) as ReadonlyArray<SVGTextElement>;
     }
 
@@ -108,7 +117,7 @@ export class AppRandomWheel {
         return (<Host>
             <svg width={this.width} height={this.height} viewBox={`0 0 ${this.viewBoxSize} ${this.viewBoxSize}`}>
                 <g id="wheel-main-container" transform={`translate(${this.padding + this.radius}, ${this.padding + this.radius})`}>
-                    <g id="wheel-rotable-container" style={this.getRotableElementStyle()}>
+                    <g ref={(el) => this.wheelRotableContainerEl = el as SVGGElement}>
                         {this.renderDef()}
                         {...this.renderPathsAttributes()}
                         {...this.renderText()}

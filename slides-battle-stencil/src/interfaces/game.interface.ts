@@ -5,6 +5,6 @@ export interface IGame {
     id: string;
     players: ReadonlyArray<IPlayerGame>;
     topics: ReadonlyArray<ITopicGame>;
-    currentPlayerId: string;
-    currentTopicId: string;
+    lastPlayerId: string;
+    lastTopicId: string;
 }
