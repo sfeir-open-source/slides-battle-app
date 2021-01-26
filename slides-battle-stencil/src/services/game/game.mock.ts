@@ -29,7 +29,7 @@ export class GameMock implements IGameService {
         return undefined;
     }
 
-    async isDefaultTopic(id: string) {
+    isDefaultTopic(id: string) {
         console.log("[GameMock] isDefaultTopic", id);
         return true;
     }

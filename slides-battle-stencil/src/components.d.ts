@@ -36,6 +36,9 @@ export namespace Components {
         "gameStatus": GameStatusEnum;
         "isReadyForNextTurn": boolean;
     }
+    interface AppGameTopicSelector {
+        "topics": ReadonlyArray<ITopicGame>;
+    }
     interface AppGameWheels {
         "drawNextRound": () => Promise<{ player: IPlayerGame; topic: ITopicGame; }>;
         "players": ReadonlyArray<IPlayerGame>;
@@ -107,6 +110,12 @@ declare global {
         prototype: HTMLAppGameHeaderElement;
         new (): HTMLAppGameHeaderElement;
     };
+    interface HTMLAppGameTopicSelectorElement extends Components.AppGameTopicSelector, HTMLStencilElement {
+    }
+    var HTMLAppGameTopicSelectorElement: {
+        prototype: HTMLAppGameTopicSelectorElement;
+        new (): HTMLAppGameTopicSelectorElement;
+    };
     interface HTMLAppGameWheelsElement extends Components.AppGameWheels, HTMLStencilElement {
     }
     var HTMLAppGameWheelsElement: {
@@ -146,6 +155,7 @@ declare global {
         "app-game": HTMLAppGameElement;
         "app-game-actions": HTMLAppGameActionsElement;
         "app-game-header": HTMLAppGameHeaderElement;
+        "app-game-topic-selector": HTMLAppGameTopicSelectorElement;
         "app-game-wheels": HTMLAppGameWheelsElement;
         "app-header": HTMLAppHeaderElement;
         "app-home": HTMLAppHomeElement;
@@ -184,6 +194,10 @@ declare namespace LocalJSX {
         "gameStatus"?: GameStatusEnum;
         "isReadyForNextTurn"?: boolean;
     }
+    interface AppGameTopicSelector {
+        "onApp-game-topic-selection"?: (event: CustomEvent<ITopicGame>) => void;
+        "topics"?: ReadonlyArray<ITopicGame>;
+    }
     interface AppGameWheels {
         "players"?: ReadonlyArray<IPlayerGame>;
         "topics"?: ReadonlyArray<ITopicGame>;
@@ -212,6 +226,7 @@ declare namespace LocalJSX {
         "app-game": AppGame;
         "app-game-actions": AppGameActions;
         "app-game-header": AppGameHeader;
+        "app-game-topic-selector": AppGameTopicSelector;
         "app-game-wheels": AppGameWheels;
         "app-header": AppHeader;
         "app-home": AppHome;
@@ -231,6 +246,7 @@ declare module "@stencil/core" {
             "app-game": LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
             "app-game-actions": LocalJSX.AppGameActions & JSXBase.HTMLAttributes<HTMLAppGameActionsElement>;
             "app-game-header": LocalJSX.AppGameHeader & JSXBase.HTMLAttributes<HTMLAppGameHeaderElement>;
+            "app-game-topic-selector": LocalJSX.AppGameTopicSelector & JSXBase.HTMLAttributes<HTMLAppGameTopicSelectorElement>;
             "app-game-wheels": LocalJSX.AppGameWheels & JSXBase.HTMLAttributes<HTMLAppGameWheelsElement>;
             "app-header": LocalJSX.AppHeader & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;

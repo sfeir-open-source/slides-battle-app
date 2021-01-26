@@ -119,7 +119,7 @@ export class GameService implements IGameService {
         return Promise.resolve(GameStatusEnum.ON_GOING);
     }
 
-    async isDefaultTopic(id: string) {
-        return Promise.resolve(DEFAULT_TOPIC.map(({ id }) => id).includes(id));
+    isDefaultTopic(id: string) {
+        return DEFAULT_TOPIC.map(({ id }) => id).includes(id);
     }
 }
