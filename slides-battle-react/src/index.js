@@ -1,35 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-
-import rootReducer from "./reducers/rootReducer";
-
-import * as serviceWorker from "./serviceWorker";
 
 import "./index.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import Routes from "./components/Routes";
+import { Home } from "./components/home";
 
-const composeEnhancers = composeWithDevTools({
-	trace: true,
-	traceLimit: 25,
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#433826",
+    },
+    secondary: {
+      main: "#ffffff",
+    },
+  },
 });
 
-const store = createStore(rootReducer, composeEnhancers());
-
 ReactDOM.render(
-	<Provider store={store}>
-		<React.StrictMode>
-			<Routes />
-		</React.StrictMode>
-	</Provider>,
-	document.getElementById("root")
+  <ThemeProvider theme={theme}>
+    <React.StrictMode>
+      <Home />
+    </React.StrictMode>
+  </ThemeProvider>,
+  document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
