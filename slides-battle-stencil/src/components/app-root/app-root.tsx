@@ -1,4 +1,4 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, Host } from '@stencil/core';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { Component, h } from '@stencil/core';
 export class AppRoot {
 
   render() {
-    return (
+    return (<Host>
       <stencil-router>
         <app-header></app-header>
         <main>
@@ -20,6 +20,7 @@ export class AppRoot {
           </stencil-route-switch>
         </main>
       </stencil-router>
+    </Host>
     );
   }
 }

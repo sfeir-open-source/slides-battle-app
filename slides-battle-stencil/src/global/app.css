@@ -8,9 +8,70 @@
   Any global CSS variables should also be applied here.
 */
 
+html, body {
+  height: 100%;
+}
+
 
 body {
   margin: 0px;
   padding: 0px;
+  background-color: --background-color;
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+:root {
+  --dark-blue-color: #0C1464;
+  --dark-blue-color-rgb: 12,20,100;
+  --dark-blue-color-contrast: #ffffff;
+  --dark-blue-color-contrast-rgb: 255,255,255;
+  --dark-blue-color-shade: #0b1258;
+  --dark-blue-color-tint: #242c74;
+
+  --dark-blue-color-step-50: #18206c;
+  --dark-blue-color-step-100: #242c74;
+  --dark-blue-color-step-150: #30377b;
+  --dark-blue-color-step-200: #3d4383;
+  --dark-blue-color-step-250: #494f8b;
+  --dark-blue-color-step-300: #555b93;
+  --dark-blue-color-step-350: #61669a;
+  --dark-blue-color-step-400: #6d72a2;
+  --dark-blue-color-step-450: #797eaa;
+  --dark-blue-color-step-500: #868ab2;
+  --dark-blue-color-step-550: #9295b9;
+  --dark-blue-color-step-600: #9ea1c1;
+  --dark-blue-color-step-650: #aaadc9;
+  --dark-blue-color-step-700: #b6b9d1;
+  --dark-blue-color-step-750: #c2c4d8;
+  --dark-blue-color-step-800: #ced0e0;
+  --dark-blue-color-step-850: #dbdce8;
+  --dark-blue-color-step-900: #e7e8f0;
+  --dark-blue-color-step-950: #f3f3f7;
+  
+  --yellow-color: #EAC02F;
+  --yellow-color-rgb: 234,192,47;
+  --yellow-color-contrast: #000000;
+  --yellow-color-contrast-rgb: 0,0,0;
+  --yellow-color-shade: #cea929;
+  --yellow-color-tint: #ecc644;
+
+  --yellow-color-step-50: #ebc339;
+  --yellow-color-step-100: #ecc644;
+  --yellow-color-step-150: #edc94e;
+  --yellow-color-step-200: #eecd59;
+  --yellow-color-step-250: #efd063;
+  --yellow-color-step-300: #f0d36d;
+  --yellow-color-step-350: #f1d678;
+  --yellow-color-step-400: #f2d982;
+  --yellow-color-step-450: #f3dc8d;
+  --yellow-color-step-500: #f5e097;
+  --yellow-color-step-550: #f6e3a1;
+  --yellow-color-step-600: #f7e6ac;
+  --yellow-color-step-650: #f8e9b6;
+  --yellow-color-step-700: #f9ecc1;
+  --yellow-color-step-750: #faefcb;
+  --yellow-color-step-800: #fbf2d5;
+  --yellow-color-step-850: #fcf6e0;
+  --yellow-color-step-900: #fdf9ea;
+  --yellow-color-step-950: #fefcf5;
 }

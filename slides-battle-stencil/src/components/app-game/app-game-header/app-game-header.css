@@ -1,0 +1,20 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    color: var(--dark-blue-color-contrast);
+}
+
+div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.emphasis {
+    color: var(--dark-blue-color-step-750);
+}

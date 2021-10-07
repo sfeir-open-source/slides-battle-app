@@ -12,34 +12,24 @@ export class PlayersConfigurationService implements IPlayersConfigurationService
         this.playersConfiguration = [
             {
                 id: uuidv4(),
-                label: 'Player 1',
+                label: 'Jean-François',
                 isAvailable: true
             },
             {
                 id: uuidv4(),
-                label: 'Player 2',
+                label: 'Célia',
                 isAvailable: true
             },
             {
                 id: uuidv4(),
-                label: 'Player 3',
+                label: 'Aziz',
                 isAvailable: true
             },
-            {
-                id: uuidv4(),
-                label: 'Player 4',
-                isAvailable: true
-            },
-            {
-                id: uuidv4(),
-                label: 'Player 5',
-                isAvailable: false
-            },
-            {
-                id: uuidv4(),
-                label: 'Player 6',
-                isAvailable: true
-            },
+            //{
+            //    id: uuidv4(),
+            //    label: 'Mystery speaker',
+            //    isAvailable: true
+            //},
         ];
     }
 

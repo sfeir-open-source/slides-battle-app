@@ -1,0 +1,19 @@
+button {
+  margin: 8px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+
+  background: var(--yellow-color);
+  color: var(--yellow-color-contrast);
+
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+  
+button:hover {
+  background: var(--yellow-color-tint);
+}

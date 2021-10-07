@@ -52,7 +52,7 @@ export class AppGame {
     }
 
     async componentWillLoad() {
-        this.game = await this.gameSrv.createGame(3);
+        this.game = await this.gameSrv.createGame(4);
         this.gameStatus = await this.gameSrv.getGameStatus(this.game.id);
     }
 

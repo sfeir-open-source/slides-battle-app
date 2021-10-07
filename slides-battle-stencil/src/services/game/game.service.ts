@@ -9,12 +9,12 @@ import { IGameService } from "./game.interface";
 const DEFAULT_TOPIC: ReadonlyArray<ITopicConfiguration> = [
     {
         id: uuidv4(),
-        label: `Speaker's Choice`,
+        label: `Choix du Speaker`,
         isAvailable: true
     },
     {
         id: uuidv4(),
-        label: `Public's Choice`,
+        label: `Choix du public`,
         isAvailable: true
     }
 ];
@@ -39,18 +39,21 @@ export class GameService implements IGameService {
         const availableTopics = this.topicsConfigurationSrv.getTopicsConfiguration()
             .filter(topic => topic.isAvailable);
 
-        if (availablePlayers.length < numberOfPlayers) {
-            return Promise.reject(`There is not enough players in the configuration to generate a game. Players available : ${availablePlayers.length}`);
-        }
-        if (availableTopics.length < numberOfPlayers + 1) {
-            return Promise.reject(`There is not enough topics in the configuration to generate a game. Topics available : ${availableTopics.length}`);
-        }
+        //if (availablePlayers.length < numberOfPlayers) {
+        //    return Promise.reject(`There is not enough players in the configuration to generate a game. Players available : ${availablePlayers.length}`);
+        //}
+        //if (availableTopics.length < numberOfPlayers + 1) {
+        //    return Promise.reject(`There is not enough topics in the configuration to generate a game. Topics available : ${availableTopics.length}`);
+        //}
 
-        const selectedPlayers = combinaison<IPlayerConfiguration>(availablePlayers, numberOfPlayers);
-        const selectedTopics: ReadonlyArray<ITopicConfiguration> = [
-            ...combinaison<ITopicConfiguration>(availableTopics, numberOfPlayers),
-            ...DEFAULT_TOPIC
-        ];
+        //const selectedPlayers = combinaison<IPlayerConfiguration>(availablePlayers, numberOfPlayers);
+        //const selectedTopics: ReadonlyArray<ITopicConfiguration> = [
+        //    ...combinaison<ITopicConfiguration>(availableTopics, numberOfPlayers),
+        //    ...DEFAULT_TOPIC
+        //];
+
+        const selectedPlayers = availablePlayers;
+        const selectedTopics = [...availableTopics, ...DEFAULT_TOPIC];
 
         const game: IGame = {
             id: uuidv4(),

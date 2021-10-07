@@ -12,27 +12,27 @@ export class TopicsConfigurationService implements ITopicsConfigurationService {
         this.topicsConfiguration = [
             {
                 id: uuidv4(),
-                label: 'Topic 1',
+                label: 'Lancement de produit',
                 isAvailable: true
             },
             {
                 id: uuidv4(),
-                label: 'Topic 2',
-                isAvailable: false
-            },
-            {
-                id: uuidv4(),
-                label: 'Topic 3',
+                label: 'Discours de mariage',
                 isAvailable: true
             },
             {
                 id: uuidv4(),
-                label: 'Topic 4',
+                label: 'Séminaire d\'entraide',
                 isAvailable: true
             },
             {
                 id: uuidv4(),
-                label: 'Topic 5',
+                label: 'Pitch émission de télé-réalité',
+                isAvailable: true
+            },
+            {
+                id: uuidv4(),
+                label: 'Pitch de thèse',
                 isAvailable: true
             },
         ];

@@ -24,8 +24,8 @@ export class AppGameHeader {
                     this.isReadyForNextTurn ?
                         <p>The game is ready to draw the next round.</p> :
                         <div>
-                            <p>Player selected: {this.currentPlayer?.label}</p>
-                            <p>Topic selected: {this.currentTopic?.label}</p>
+                            <p>Player selected: <span class="emphasis">{this.currentPlayer?.label}</span></p>
+                            <p>Topic selected: <span class="emphasis">{this.currentTopic?.label}</span></p>
                         </div> :
                     <p>This game is over.</p>
             }
